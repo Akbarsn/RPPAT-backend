@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const MaterialStocks = sequelize.define('MaterialStocks', {
-    mid:DataTypes.INTEGER,
     item: DataTypes.STRING,
     unit: DataTypes.STRING,
     qty: DataTypes.INTEGER,
@@ -10,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     owner: DataTypes.INTEGER
   }, {});
   MaterialStocks.associate = function(models) {
-    MaterialStocks.belongsTo(models.user,{foreignKey:'uid'})
+    models.MaterialStocks.belongsTo(models.Users,{foreignKey:'uid'})
   };
   return MaterialStocks;
 };

@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const PackageStocks = sequelize.define('PackageStocks', {
-    pid:DataTypes.INTEGER,
     item: DataTypes.STRING,
     unit: DataTypes.STRING,
     qty: DataTypes.INTEGER,
@@ -10,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     owner: DataTypes.INTEGER
   }, {});
   PackageStocks.associate = function(models) {
-    // associations can be defined here
+    models.PackageStocks.belongsTo(models.Users, {foreignKey:'uid'})
   };
   return PackageStocks;
 };

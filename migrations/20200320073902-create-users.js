@@ -2,7 +2,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Users', {
-      uid: {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -29,6 +29,9 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
+      email:{
+        type:Sequelize.STRING
+      },
       bankAccount: {
         type: Sequelize.STRING
       },
@@ -42,7 +45,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       profilImage: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue:"/blank.png"
       },
       createdAt: {
         allowNull: false,

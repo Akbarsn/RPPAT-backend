@@ -2,7 +2,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('MaterialStocks', {
-      mid: {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
