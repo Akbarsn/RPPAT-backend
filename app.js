@@ -40,7 +40,7 @@ function notFound(req, res, next) {
 app.use(notFound)
 
 function errorHandler(err, req, res, next) {
-    res.status(res.statusCode | 500)
+    res.status(res.statusCode || 500)
     res.json({
         status:"Error",
         message:err.message

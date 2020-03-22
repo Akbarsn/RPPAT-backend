@@ -57,13 +57,13 @@ module.exports = {
                                 data: user
                             })
                         } else {
-                            const error = new Error("Can't create new user 1")
+                            const error = new Error("Can't create new user")
                             next(error)
                         }
     
                     } catch (err) {
                         console.log(err.message)
-                        const error = new Error("Can't create new user 2")
+                        const error = new Error("Can't create new user")
                         next(error)
                     }
                 } else {
