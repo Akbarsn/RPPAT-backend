@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     owner: DataTypes.INTEGER
   }, {});
   MaterialStocks.associate = function(models) {
-    models.MaterialStocks.belongsTo(models.Users,{foreignKey:'uid'})
+    models.MaterialStocks.belongsTo(models.Users,{foreignKey:'id'})
   };
   return MaterialStocks;
 };
