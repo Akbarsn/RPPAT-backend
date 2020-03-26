@@ -29,7 +29,7 @@ router.post('/register', upload.single('IDcard'), RegisterHandler)
 //Login
 router.post('/login', 
     passport.authenticate("local", {
-    failureRedirect: "/fail-login"
+    failureRedirect: "/fail-auth"
 }), LoginHandler)
 
 module.exports = router

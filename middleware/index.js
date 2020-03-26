@@ -3,7 +3,7 @@ module.exports = {
         if (req.isAuthenticated()) {
             next()
         } else {
-            res.redirect("/login")
+            res.redirect("/fail-auth")
         }
     }
 }
