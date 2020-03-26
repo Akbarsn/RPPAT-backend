@@ -17,18 +17,11 @@ module.exports = {
       weight: {
         type: Sequelize.STRING
       },
-      unit: {
-        type: Sequelize.STRING,
-        allowNull:true,
-        defaultValue:null
+      sellPrice: {
+        type: Sequelize.INTEGER
       },
-      grade: {
-        type: Sequelize.CHAR(1),
-        allowNull:true,
-        defaultValue:null
-      },
-      status: {
-        type: Sequelize.CHAR(1)
+      buyPrice: {
+        type: Sequelize.INTEGER
       },
       owner: {
         type: Sequelize.INTEGER
