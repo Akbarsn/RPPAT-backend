@@ -253,6 +253,108 @@ module.exports = {
             const error = new Error("Terjadi kesalahan saat membuka riwayat transaksi")
             next(error)
         }
+    },
+
+    async getBeliBahanPetani(req, res, next) {
+        try {
+            const stocks = await models.Users.findAll({
+                where: {
+                    role: 0
+                }, include: 'apples'
+            })
+            if (stocks) {
+                res.status(200).json({
+                    message: "Success",
+                    data: stocks
+                })
+            } else {
+                const error = new Error("Terjadi kesalahan saat membukan halaman Beli Bahan Petani Apel")
+                next(error)
+            }
+        } catch (err) {
+            const error = new Error("Terjadi kesalahan saat membukan halaman Beli Bahan Petani Apel")
+            next(error)
+        }
+    },
+
+    async getBeliBahanKemasan(req, res, next) {
+        try {
+            const stocks = await models.Users.findAll({
+                where: {
+                    role: 1
+                }, include: 'packages'
+            })
+            if (stocks) {
+                res.status(200).json({
+                    message: "Success",
+                    data: stocks
+                })
+            } else {
+                const error = new Error("Terjadi kesalahan saat membukan halaman Beli Bahan Pemasok Kemasan")
+                next(error)
+            }
+        } catch (err) {
+            const error = new Error("Terjadi kesalahan saat membukan halaman Beli Bahan Pemasok Kemasan")
+            next(error)
+        }
+    },
+
+    async getBeliBahanTambah(req, res, next) {
+        try {
+            const stocks = await models.Users.findAll({
+                where: {
+                    role: 2
+                }, include: 'materials'
+            })
+            if (stocks) {
+                res.status(200).json({
+                    message: "Success",
+                    data: stocks
+                })
+            } else {
+                const error = new Error("Terjadi kesalahan saat membukan halaman Beli Bahan Pemasok Bahan Tambah")
+                next(error)
+            }
+        } catch (err) {
+            const error = new Error("Terjadi kesalahan saat membukan halaman Beli Bahan Pemasok Bahan Tambah")
+            next(error)
+        }
+    },
+
+    async getDetailToko(req, res, next) {
+        const id = req.params.shopID
+        try {
+            const { role } = await models.Users.findByPk(id, { attributes: ['role'] })
+            let stocks
+            switch (role) {
+                case 0:
+                    stocks = await models.Users.findByPk(id, { include: 'apples' })
+                    break;
+                case 1:
+                    stocks = await models.Users.findByPk(id, { include: 'packages' })
+                    break;
+                case 2:
+                    stocks = await models.Users.findByPk(id, { include: 'materials' })
+                    break;
+                default:
+                    const err = new Error("Tidak ditemukan toko")
+                    next(err)
+                    break;
+            }
+
+            if (stocks) {
+                res.status(200).json({
+                    message: "Success",
+                    data: stocks
+                })
+            } else {
+                const err = new Error("Terjadi kesalahan dalam membuka page Detail Toko")
+                next(err)
+            }
+        } catch (error) {
+            const err = new Error("Terjadi kesalahan dalam membuka page Detail Toko")
+            next(err)
+        }
     }
 
 

@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const models = require('../models')
 const authorization = require('./auth')
 const petaniRoute = require('./petani')
 const kemasanRoute = require('./kemasan')
@@ -26,8 +27,11 @@ router.get('/fail-auth', (req, res) => {
     })
 })
 
-router.get('/test', (req, res) => {
-    
+router.get('/test', async (req, res) => {
+    const farmer = await models.Users.findAll({include:'apples'})
+    res.json({
+        data:farmer
+    })
 })
 
 module.exports = router
