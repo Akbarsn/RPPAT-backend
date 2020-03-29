@@ -113,6 +113,52 @@ module.exports = {
             const err = new Error("Can't get laporan stok kemasan")
             next(err)
         }
+    },
+    //Get Lihat Stok
+    async getLihatStok(req, res, next) {
+        try {
+            const stocks = await models.OutletStocks.findAll({
+                where: { owner: req.user.id }
+            })
+
+            if (stocks) {
+                res.status(200).json({
+                    message: "Success",
+                    data: stocks
+                })
+            } else {
+                const error = new Error("Terjadi kegagalan membuka lihat stok")
+                next(error)
+            }
+        } catch (err) {
+            const error = new Error("Terjadi kegagalan membuka lihat stok")
+            next(error)
+        }
+    },
+
+    //Get Riwayat Transaksi
+    async getRiwayat(req, res, next) {
+        try {
+            const history = await models.Transactions.findAll({
+                where: {
+                    from: req.user.id
+                }
+            })
+
+            if (history) {
+                res.status(200).json({
+                    message: "success",
+                    data: history
+                })
+            } else {
+                const error = new Error("Terjadi kesalahan saat membuka riwayat transaksi")
+                next(error)
+            }
+        } catch (err) {
+            const error = new Error("Terjadi kesalahan saat membuka riwayat transaksi")
+            next(error)
+        }
     }
+
 
 }

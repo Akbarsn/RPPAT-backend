@@ -154,17 +154,17 @@ module.exports = {
 
     //Post Data Laporan
     async postDataProduksi(req, res, next) {
-        const { item, qty, price, weight } = req.body;
+        const { item, qty, price, weight, type } = req.body;
         const userId = req.user.id;
 
-        if (!(item && grade && qty && price && unit)) {
+        if (!(item && qty && price && weight && type)) {
             res.status(406)
             const err = new Error("Field still empty")
             next(err)
         }
         try {
             const stock = await models.FactoryStocks.create({
-                item, qty, weight, price, owner: userId
+                item, qty, weight, price, owner: userId, type
             })
 
             if (stock) {
@@ -181,6 +181,79 @@ module.exports = {
             const err = new Error("Cant add stok panen")
             next(err)
         }
+    },
+    //Get Lihat Stok
+    async getLihatStokBahan(req, res, next) {
+        try {
+            const stocks = await models.FactoryStocks.findAll({
+                where: {
+                    owner: req.user.id,
+                    type: 1
+                }
+            })
+
+            if (stocks) {
+                res.status(200).json({
+                    message: "Success",
+                    data: stocks
+                })
+            } else {
+                const error = new Error("Terjadi kegagalan membuka lihat stok")
+                next(error)
+            }
+        } catch (err) {
+            const error = new Error("Terjadi kegagalan membuka lihat stok")
+            next(error)
+        }
+    },
+
+    async getLihatStokProduk(req, res, next) {
+        try {
+            const stocks = await models.FactoryStocks.findAll({
+                where: {
+                    owner: req.user.id,
+                    type: 2
+                }
+            })
+
+            if (stocks) {
+                res.status(200).json({
+                    message: "Success",
+                    data: stocks
+                })
+            } else {
+                const error = new Error("Terjadi kegagalan membuka lihat stok")
+                next(error)
+            }
+        } catch (err) {
+            const error = new Error("Terjadi kegagalan membuka lihat stok")
+            next(error)
+        }
+    },
+
+    //Get Riwayat Transaksi
+    async getRiwayat(req, res, next) {
+        try {
+            const history = await models.Transactions.findAll({
+                where: {
+                    from: req.user.id
+                }
+            })
+
+            if (history) {
+                res.status(200).json({
+                    message: "success",
+                    data: history
+                })
+            } else {
+                const error = new Error("Terjadi kesalahan saat membuka riwayat transaksi")
+                next(error)
+            }
+        } catch (err) {
+            const error = new Error("Terjadi kesalahan saat membuka riwayat transaksi")
+            next(error)
+        }
     }
+
 
 }

@@ -127,6 +127,36 @@
      ```
      message: error message
      ```
+5. Get Lihat Stok
+
+   - Method : GET
+   - Link : /lihat-stok
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Stocks
+     ```
+     - 500
+     ```
+     message : error message
+     ```
+
+6. Get Riwayat Transaksi
+   - Method : GET
+   - Link : /riwayat-transaksi
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Transaksi
+     ```
+     - 500
+     ```
+     message : error message
+     ```
 
 ## Pemasok Bahan Tambah
 
@@ -198,6 +228,36 @@
      ```
      message: error message
      ```
+5. Get Lihat Stok
+
+   - Method : GET
+   - Link : /lihat-stok
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Stocks
+     ```
+     - 500
+     ```
+     message : error message
+     ```
+
+6. Get Riwayat Transaksi
+   - Method : GET
+   - Link : /riwayat-transaksi
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Transaksi
+     ```
+     - 500
+     ```
+     message : error message
+     ```
 
 ## Pemasok Kemasan
 
@@ -250,6 +310,7 @@
      ```
 
 4. Post Data Pembelian
+
    - Method : POST
    - Link : /kemasan
    - Response Body : (Required) `user: User Data`
@@ -268,6 +329,38 @@
      - 500
      ```
      message: error message
+     ```
+
+5. Get Lihat Stok
+
+   - Method : GET
+   - Link : /lihat-stok
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Stocks
+     ```
+     - 500
+     ```
+     message : error message
+     ```
+
+6. Get Riwayat Transaksi
+
+   - Method : GET
+   - Link : /riwayat-transaksi
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Transaksi
+     ```
+     - 500
+     ```
+     message : error message
      ```
 
 ## UMKM
@@ -337,6 +430,7 @@
      ```
 
 5. Post Data Pembelian
+
    - Method : POST
    - Link : /ukm
    - Response Body : (Required) `user: User Data`
@@ -346,6 +440,7 @@
      - qty : number
      - sellPrice : integer
      - buyPrice : integer
+     - type : integer (1 | 2)
    - Response (JSON) :
      - 200
      ```
@@ -355,6 +450,54 @@
      - 500
      ```
      message: error message
+     ```
+
+6. Get Lihat Stok
+
+   - Method : GET
+   - Link : /lihat-stok/bahan
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Stocks
+     ```
+     - 500
+     ```
+     message : error message
+     ```
+
+7. Get Lihat Stok
+
+   - Method : GET
+   - Link : /lihat-stok/produk
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Stocks
+     ```
+     - 500
+     ```
+     message : error message
+     ```
+
+8. Get Riwayat Transaksi
+
+   - Method : GET
+   - Link : /riwayat-transaksi
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Transaksi
+     ```
+     - 500
+     ```
+     message : error message
      ```
 
 ## Outlet
@@ -405,4 +548,36 @@
      - 500
      ```
      message: error message
+     ```
+
+4. Get Lihat Stok
+
+   - Method : GET
+   - Link : /lihat-stok
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Stocks
+     ```
+     - 500
+     ```
+     message : error message
+     ```
+
+5. Get Riwayat Transaksi
+
+   - Method : GET
+   - Link : /riwayat-transaksi
+   - Response Body : (Required) `user : User Data`
+   - Response (JSON) :
+     - 200
+     ```
+     message : "Success"
+     data : Transaksi
+     ```
+     - 500
+     ```
+     message : error message
      ```
