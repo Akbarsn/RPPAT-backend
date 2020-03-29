@@ -15,7 +15,15 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.INTEGER,
     profilImage: DataTypes.STRING
   }, {});
-  Users.associate = function(models) {
+  Users.associate = function (models) {
+    Users.hasMany(models.FarmerStocks, { foreignKey: 'owner', as: 'apples' })
+
+    Users.hasMany(models.PackageStocks, { foreignKey: 'owner', as: 'packages' })
+
+    Users.hasMany(models.MaterialStocks, { foreignKey: 'owner', as: 'materials' })
+
+    Users.hasMany(models.FactoryStocks, { foreignKey: 'owner', as: 'products' })
+
   };
   return Users;
 };
