@@ -1,6 +1,25 @@
 const router = require('express').Router()
 const { getHomepage, getLaporanPembelian, getLaporanPenjualan,
-    getLaporanProduksi, postDataProduksi, getLihatStokBahan, getLihatStokProduk, getRiwayat, getBeliBahanPetani, getBeliBahanKemasan, getBeliBahanTambah } = require('../controllers/ukmController')
+    getLaporanProduksi, postDataProduksi, getLihatStokBahan, getLihatStokProduk, 
+    getRiwayat, getBeliBahanPetani, getBeliBahanKemasan, getBeliBahanTambah, getDetailToko,
+    PesanBahan, KonfirmasiPembayaran, KonfirmasiPenerimaan, BayarTransaksi
+} = require('../controllers/ukmController')
+const multer = require('multer')
+
+//Config for multer
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './upload/bukti_pembayaran');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+//Init multer with Disk Storage
+const upload = multer({
+    storage: storage
+})
 
 //Get Homepage
 router.get('/', getHomepage)
@@ -31,6 +50,17 @@ router.get('/beli-bahan/kemasan', getBeliBahanKemasan)
 router.get('/beli-bahan/bahan-tambahan', getBeliBahanTambah)
 
 //Get Detail Toko
-router.get('/detail-toko/:shopID')
+router.get('/detail-toko/:shopID', getDetailToko)
+
+//Post Beli Bahan
+router.post('/beli-bahan', PesanBahan)
+
+router.post('/bayar-transaksi', BayarTransaksi)
+
+//Konfirmasi Pembayaran
+router.post('/konfirmasi-pembayaran', KonfirmasiPembayaran)
+
+//Konfirmasi Penerimaan
+router.post('/terima-barang', KonfirmasiPenerimaan)
 
 module.exports = router

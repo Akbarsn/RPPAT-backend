@@ -355,7 +355,111 @@ module.exports = {
             const err = new Error("Terjadi kesalahan dalam membuka page Detail Toko")
             next(err)
         }
+    },
+
+    async PesanBahan(req, res, next) {
+        const {
+            from,
+            total,
+            items
+        } = req.body;
+
+        try {
+            const order = await models.Transactions.create({
+                from,
+                to: req.user.id,
+                total,
+                itemDetail: JSON.stringify(items),
+                proof: null,
+                status: 0
+            })
+
+            if (order) {
+                res.status(200).json({
+                    message: "Success",
+                    data: order
+                })
+            } else {
+                const err = new Error("Terjadi kesalahan dalam melakukan beli bahan")
+                next(err)
+            }
+        } catch (error) {
+            const err = new Error("Terjadi kesalahan dalam melakukan beli bahan")
+            next(err)
+        }
+    },
+
+    async BayarTransaksi(req, res, next) {
+        const { id } = req.body;
+        try {
+            const order = await models.Transactions.update(
+                { status: 1, proof: req.file.path },
+                { where: { id: id } })
+
+            if (order) {
+                res.status(200).json({
+                    message: "Success",
+                    data: order
+                })
+            } else {
+                const err = new Error("Terjadi kesalahan dalam melakukan pembayaran")
+                next(err);
+            }
+        } catch (error) {
+            const err = new Error("Terjadi kesalahan dalam melakukan pembayaran")
+            next(err);
+        }
+    },
+
+    async KonfirmasiPembayaran(req, res, next) {
+        const { id } = req.body;
+
+        try {
+            const order = await models.Transactions.update(
+                { status: 2 },
+                { where: { id: id } }
+            )
+
+            if (order) {
+                res.status(200).json({
+                    message: "Success",
+                    data: order
+                })
+            } else {
+                const err = new Error("Terjadi kesalahan dalam konfirmasi pembayaran");
+                next(err)
+            }
+        } catch (error) {
+            const err = new Error("Terjadi kesalahan dalam konfirmasi pembayaran");
+            next(err)
+        }
+    },
+
+    async KonfirmasiPenerimaan(req, res, next) {
+        const { id } = req.body;
+
+        try {
+            const order = await models.Transactions.update(
+                { status: 3 },
+                { where: { id: id } }
+            )
+
+            if (order) {
+                res.status(200).json({
+                    message: "Success",
+                    data: order
+                })
+            } else {
+                const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
+                next(err)
+            }
+        } catch (error) {
+            const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
+            next(err)
+        }
     }
+
+
 
 
 }

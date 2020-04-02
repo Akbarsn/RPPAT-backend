@@ -190,6 +190,30 @@ module.exports = {
             const error = new Error("Terjadi kesalahan saat membuka riwayat transaksi")
             next(error)
         }
+    },
+
+    async KonfirmasiPembayaran(req, res, next) {
+        const { id } = req.body;
+
+        try {
+            const order = await models.Transactions.update(
+                { status: 2 },
+                { where: { id: id } }
+            )
+
+            if (order) {
+                res.status(200).json({
+                    message: "Success",
+                    data: order
+                })
+            } else {
+                const err = new Error("Terjadi kesalahan dalam konfirmasi pembayaran");
+                next(err)
+            }
+        } catch (error) {
+            const err = new Error("Terjadi kesalahan dalam konfirmasi pembayaran");
+            next(err)
+        }
     }
 
 }

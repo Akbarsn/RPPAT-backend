@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { getHomepage, getLaporanPembelian, getLaporanPenjualan, postDataPembelian, getLihatStok, getRiwayat } = require('../controllers/bahanTambahController')
+const { getHomepage, getLaporanPembelian, getLaporanPenjualan, postDataPembelian, getLihatStok, getRiwayat, KonfirmasiPembayaran } = require('../controllers/bahanTambahController')
 
 //Get Homepage
 router.get('/', getHomepage)
@@ -17,5 +17,8 @@ router.get('/lihat-stok', getLihatStok)
 
 //Get Riwayat Transaksi
 router.get('/riwayat-transaksi', getRiwayat)
+
+//Konfirmasi Pembayaran
+router.post('/konfirmasi-pembayaran', KonfirmasiPembayaran)
 
 module.exports = router

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const models = require('../models')
+const models = require('../models');
 const authorization = require('./auth')
 const petaniRoute = require('./petani')
 const kemasanRoute = require('./kemasan')
@@ -21,6 +21,8 @@ router.use('/ukm', isAuthenticated, UMKMRoute)
 
 router.use('/outlet', isAuthenticated, outletRoute)
 
+router.use('/kasir', isAuthenticated)
+
 router.get('/fail-auth', (req, res) => {
     res.status(406).json({
         message: "Authentication Failed"
@@ -28,9 +30,21 @@ router.get('/fail-auth', (req, res) => {
 })
 
 router.get('/test', async (req, res) => {
-    const farmer = await models.Users.findAll({include:'apples'})
+    let transaction, farmStocks, user;
+
+    try {
+        transaction = await models.sequelize.transaction();
+
+        farmStocks = await models.FarmerStocks.findAll()
+        user = await models.Users.findAll()
+
+        await transaction.commit();
+    } catch (error) {
+        if (transaction) await transaction.rollback();
+    }
+
     res.json({
-        data:farmer
+        data: { farmStocks, user }
     })
 })
 
