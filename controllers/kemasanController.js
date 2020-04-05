@@ -1,12 +1,11 @@
 const models = require("../models");
-const sequelize = require('sequelize')
 const { Op } = require('sequelize')
 
 module.exports = {
     //Get Homepage
     async getHomepage(req, res, next) {
         try {
-            const result = await sequelize.transaction(async (t) => {
+            await models.sequelize.transaction(async (t) => {
                 const allStock = await models.PackageStocks.findAll({
                     where: {
                         owner: req.user.id
