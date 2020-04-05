@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const passport = require('passport')
 const session = require('express-session')
 const port = 5000;
 
@@ -8,9 +7,6 @@ const port = 5000;
 const appRoute = require('./router')
 
 app.use(express.json())
-
-//Passport Config
-require("./config/passport")(passport);
 
 //Express body parser
 app.use(express.urlencoded({ extended: true }));
@@ -23,10 +19,6 @@ app.use(
     saveUninitialized: true
   })
 );
-
-//Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/', appRoute)
 

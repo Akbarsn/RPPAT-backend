@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const multer = require('multer')
-const passport = require('passport')
 
 //Config for multer
 var storage = multer.diskStorage({

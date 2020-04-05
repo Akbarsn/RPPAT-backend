@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const model = require('../models')
+const models = require('../models')
 const bcrypt = require('bcryptjs')
 const validator = require('validator')
 const jwt = require('jsonwebtoken')
@@ -40,7 +40,7 @@ module.exports = {
 
                 if (hashedPassword) {
                     try {
-                        const user = await model.Users.create({
+                        const user = await models.Users.create({
                             name,
                             fullName,
                             IDcard: req.file.path,
@@ -103,7 +103,7 @@ module.exports = {
                         "id": user.id
                     }
 
-                    const token = await jwt.sign(payload, KEY)
+                    const token = jwt.sign(payload, KEY)
 
                     if (token) {
                         res.status(200).json({
@@ -123,6 +123,7 @@ module.exports = {
                 next(error)
             }
         } catch (err) {
+            console.log(err.message)
             const error = new Error("Terjadi kesalahan")
             next(error)
         }

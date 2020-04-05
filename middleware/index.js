@@ -9,7 +9,7 @@ module.exports = {
             const token = authHeader.split(' ')[1]
             if (token) {
                 try {
-                    const payload = await jwt.verify(token, KEY)
+                    const payload = jwt.verify(token, KEY)
                     if (payload) {
                         req.user = payload
                         next()
