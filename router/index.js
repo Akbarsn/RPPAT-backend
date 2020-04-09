@@ -30,21 +30,8 @@ router.get('/fail-auth', (req, res) => {
 })
 
 router.get('/test', async (req, res) => {
-    let transaction, farmStocks, user;
-
-    try {
-        transaction = await models.sequelize.transaction();
-
-        farmStocks = await models.FarmerStocks.findAll()
-        user = await models.Users.findAll()
-
-        await transaction.commit();
-    } catch (error) {
-        if (transaction) await transaction.rollback();
-    }
-
     res.json({
-        data: { farmStocks, user }
+        data: req.session
     })
 })
 

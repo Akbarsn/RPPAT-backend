@@ -106,6 +106,7 @@ module.exports = {
                     const token = jwt.sign(payload, KEY)
 
                     if (token) {
+                        req.session.token = token;
                         res.status(200).json({
                             message: "Login Successful",
                             data: token
