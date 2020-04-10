@@ -221,10 +221,30 @@ module.exports = {
             )
 
             if (order) {
-                res.status(200).json({
-                    message: "Success",
-                    data: order
+                const items = await models.Transactions.findOne({ where: { id: id } })
+
+                const isChanged = await models.sequelize.transaction(async (t) => {
+                    items.itemDetail.map((item) => {
+                        await models.MaterialStocks.decrement('qty', {
+                            by: item.qty,
+                            where: {
+                                id: item.id
+                            }
+                        }, { transaction: t })
+                    })
+
+                    return true
                 })
+
+                if (isChanged) {
+                    res.status(200).json({
+                        message: "Success",
+                        data: items,
+                    });
+                } else {
+                    const err = new Error("Terjadi kesalahan dalam konfirmasi pembayaran");
+                    next(err)
+                }
             } else {
                 const err = new Error("Terjadi kesalahan dalam konfirmasi pembayaran");
                 next(err)
