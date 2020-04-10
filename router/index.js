@@ -21,30 +21,9 @@ router.use('/ukm', isAuthenticated, UMKMRoute)
 
 router.use('/outlet', isAuthenticated, outletRoute)
 
-router.use('/kasir', isAuthenticated)
-
-router.get('/fail-auth', (req, res) => {
-    res.status(406).json({
-        message: "Authentication Failed"
-    })
-})
+router.use('/kasir', isAuthenticated, kasirRoute)
 
 router.get('/test', async (req, res) => {
-    const update = await models.FarmerStocks.update(
-        { grade: "E" },
-        {
-            where: {
-                item: "Apel Fuji",
-                grade: "B",
-            }, 
-            returning: true,
-            plain: true
-        });
-
-    res.json({
-        message: "Success",
-        data: update
-    })
 })
 
 module.exports = router

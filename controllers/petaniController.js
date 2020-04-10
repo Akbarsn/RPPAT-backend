@@ -2,7 +2,6 @@ const models = require("../models");
 const { Op } = require('sequelize')
 
 module.exports = {
-    //Get Homepage
     async getHomepage(req, res, next) {
         try {
             await models.sequelize.transaction(async (t) => {
@@ -40,7 +39,6 @@ module.exports = {
         }
     },
 
-    //Get Laporan
     async getLaporanPenjualan(req, res, next) {
         // const reqMonth = req.params.month
         // const reqYear = req.params.year
@@ -163,7 +161,7 @@ module.exports = {
             next(err)
         }
     },
-    //Get Lihat Stok
+
     async getLihatStok(req, res, next) {
         try {
             const stocks = await models.FarmerStocks.findAll({
@@ -185,7 +183,6 @@ module.exports = {
         }
     },
 
-    //Get Riwayat Transaksi
     async getRiwayat(req, res, next) {
         try {
             const history = await models.Transactions.findAll({
@@ -252,7 +249,4 @@ module.exports = {
             next(err)
         }
     }
-
-
-
 };

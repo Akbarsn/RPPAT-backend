@@ -27,8 +27,7 @@ module.exports = {
     },
 
     async PostTransaksi(req, res, next) {
-        const { total, items } = req.body
-        const outletId = req.params.outlet_id
+        const { outletId, total, items } = req.body
         const userId = req.user.id
         let transaction, selling;
 
@@ -56,5 +55,9 @@ module.exports = {
         } catch (err) {
             if (transaction) await transaction.rollback()
         }
+    },
+
+    async Login(req, res, next) {
+        
     }
 }
