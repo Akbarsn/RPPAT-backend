@@ -30,9 +30,27 @@ router.get('/fail-auth', (req, res) => {
 })
 
 router.get('/test', async (req, res) => {
-    res.json({
-        data: req.session
-    })
+    const find = await models.FarmerStocks.findOne({
+        where: {
+            item: "Apel Fuji",
+            grade: "A",
+            unit: "Kilogram",
+            owner: "1"
+        }
+    });
+
+    if (find === null) {
+        res.json({
+            message: "Failed",
+            data: find
+        })
+    } else {
+        res.json({
+            message: "Success",
+            data: find.id
+        })
+    }
+
 })
 
 module.exports = router

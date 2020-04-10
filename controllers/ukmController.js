@@ -162,14 +162,35 @@ module.exports = {
             next(err)
         }
         try {
-            const stock = await models.FactoryStocks.create({
-                item, qty, weight, price, owner: userId, type
+            let find = await models.FactoryStocks.findOne({
+                where: {
+                    item: item,
+                    weight: weight,
+                    price: price,
+                    owner: userId,
+                    type: type
+                }
             })
+
+            let stock
+            if (find === null) {
+                stock = await models.FactoryStocks.create({
+                    item, qty, weight, price, owner: userId, type
+                })
+            } else {
+                stock = await models.FactoryStocks.increment('qty', {
+                    by: qty,
+                    where: {
+                        id: find.id
+                    }
+                })
+            }
+
 
             if (stock) {
                 res.status(200).json({
                     message: "Success",
-                    data: stock
+                    data: (find === null ? stock : find)
                 })
             } else {
                 const err = new Error("Can't add stok panen")
