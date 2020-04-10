@@ -444,11 +444,12 @@ module.exports = {
                 const items = await models.Transactions.findOne({ where: { id: id } })
 
                 const isChanged = await models.sequelize.transaction(async (t) => {
-                    items.itemDetail.map((item) => {
-                        await models.MaterialStocks.decrement('qty', {
+                    JSON.parse(items.itemDetail).map(async (item) => {
+                        await models.FactoryStocks.decrement('qty', {
                             by: item.qty,
                             where: {
-                                id: item.id
+                                id: item.id,
+                                type: 2
                             }
                         }, { transaction: t })
                     })
@@ -477,6 +478,7 @@ module.exports = {
 
     async KonfirmasiPenerimaan(req, res, next) {
         const { id } = req.body;
+        const userId = req.user.id;
 
         try {
             const order = await models.Transactions.update(
@@ -485,10 +487,49 @@ module.exports = {
             )
 
             if (order) {
-                res.status(200).json({
-                    message: "Success",
-                    data: order
+                const items = await models.Transactions.findOne({ where: { id: id } })
+
+                const isChanged = await models.sequelize.transaction(async (t) => {
+                    JSON.parse(items.itemDetail).map(async (item) => {
+                        let find = await models.FactoryStocks.findOne({
+                            where: {
+                                item: item.item,
+                                weight: item.weight,
+                                price: item.price,
+                                owner: userId,
+                                type: 2
+                            }
+                        }, { transaction: t })
+
+                        if (find === null) {
+                            await models.FactoryStocks.create({
+                                item: item.item,
+                                qty: item.qty,
+                                weight: item.weight,
+                                price: item.price,
+                                owner: userId,
+                                type: 2
+                            }, { transaction: t })
+                        } else {
+                            await models.FactoryStocks.increment('qty', {
+                                by: item.qty,
+                                where: {
+                                    id: find.id,
+                                    type: 2
+                                }
+                            }, { transaction: t })
+                        }
+                    })
+
+                    return true
                 })
+
+                if (isChanged) {
+                    res.status(200).json({
+                        message: "Success",
+                        data: items,
+                    });
+                }
             } else {
                 const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
                 next(err)

@@ -26,7 +26,9 @@ module.exports = {
       owner: {
         type: Sequelize.INTEGER
       },
-      type:{
+      type:{ 
+        // Menentukan produk atau bahan
+        // 1 = Bahan, 2 = Produk
         type: Sequelize.INTEGER
       },
       createdAt: {

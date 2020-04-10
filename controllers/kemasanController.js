@@ -224,8 +224,8 @@ module.exports = {
                 const items = await models.Transactions.findOne({ where: { id: id } })
 
                 const isChanged = await models.sequelize.transaction(async (t) => {
-                    items.itemDetail.map((item) => {
-                        await models.MaterialStocks.decrement('qty', {
+                    JSON.parse(items.itemDetail).map(async (item) => {
+                        await models.PackageStocks.decrement('qty', {
                             by: item.qty,
                             where: {
                                 id: item.id

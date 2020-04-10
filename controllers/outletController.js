@@ -113,6 +113,7 @@ module.exports = {
             next(err)
         }
     },
+
     //Get Lihat Stok
     async getLihatStok(req, res, next) {
         try {
@@ -265,10 +266,48 @@ module.exports = {
             )
 
             if (order) {
-                res.status(200).json({
-                    message: "Success",
-                    data: order
+                const items = await models.Transactions.findOne({ where: { id: id } })
+
+                const isChanged = await models.sequelize.transaction(async (t) => {
+                    JSON.parse(items.itemDetail).map(async (item) => {
+                        let find = await models.OutletStocks.findOne({
+                            where: {
+                                item: item.item,
+                                weight: item.weight,
+                                owner: userId,
+                            }
+                        }, { transaction: t })
+
+                        if (find === null) {
+                            await models.OutletStocks.create({
+                                item: item.item,
+                                qty: item.qty,
+                                weight: item.weight,
+                                itemPhoto: "",
+                                buyPrice: item.price,
+                                sellPrice: item.price,
+                                owner: userId,
+                            }, { transaction: t })
+                        } else {
+                            await models.OutletStocks.increment('qty', {
+                                by: item.qty,
+                                where: {
+                                    id: find.id,
+                                    type: 2
+                                }
+                            }, { transaction: t })
+                        }
+                    })
+
+                    return true
                 })
+
+                if (isChanged) {
+                    res.status(200).json({
+                        message: "Success",
+                        data: items,
+                    });
+                }
             } else {
                 const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
                 next(err)
