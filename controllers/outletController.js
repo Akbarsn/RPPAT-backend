@@ -1,5 +1,6 @@
 const models = require("../models");
 const { Op } = require('sequelize')
+const bcrypt = require('bcryptjs')
 
 module.exports = {
     async getHomepage(req, res, next) {
@@ -310,6 +311,56 @@ module.exports = {
             }
         } catch (error) {
             const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
+            next(err)
+        }
+    },
+
+    async GetTambahKasir(req, res, next) {
+        const userId = req.user.id
+        try {
+            const cashiers = await models.Cashiers.findAll({
+                where: {
+                    outletId: userId
+                }
+            })
+
+            if (cashiers) {
+                res.status(200).json({
+                    message: "Success",
+                    data: cashiers
+                })
+            } else {
+                const error = new Error("Terjadi kesalahan dalam mengambil data kasir")
+                next(error)
+            }
+        } catch (err) {
+            console.log(err)
+            const error = new Error("Terjadi kesalahan dalam mengambil data kasir")
+            next(error)
+        }
+    },
+
+    async TambahKasir(req, res, next) {
+        const { username, password, fullName } = req.body
+        const outletId = req.user.outletId
+
+        try {
+            const cashier = await models.Cashiers.create({
+                username, password, fullName, workingOn: outletId
+            })
+
+            if (cashier) {
+                res.status(200).json({
+                    message: "Success",
+                    data: cashier
+                })
+            } else {
+                const err = new Error("Terjadi kesalahan dalam menambah kasir")
+                next(err)
+            }
+        } catch (error) {
+            console.log(error)
+            const err = new Error("Terjadi kesalahan dalam menambah kasir")
             next(err)
         }
     }

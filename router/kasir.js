@@ -4,3 +4,5 @@ const { GetPage, PostTransaksi } = require('../controllers/kasirController')
 router.get('/', GetPage)
 
 router.post('/', PostTransaksi)
+
+module.exports = router

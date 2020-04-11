@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const models = require('../models');
+const kasirRoute = require('./kasir')
+const { Login } = require('../controllers/kasirController')
 const authorization = require('./auth')
 const petaniRoute = require('./petani')
 const kemasanRoute = require('./kemasan')
@@ -10,6 +12,8 @@ const UMKMRoute = require('./ukm')
 const { isAuthenticated } = require('../middleware')
 
 router.use('/auth', authorization)
+
+router.post('/kasir/login', Login)
 
 router.use('/petani', isAuthenticated, petaniRoute)
 
