@@ -46,7 +46,7 @@ module.exports = {
                 byCashier: userId
             })
 
-            items.map((item) => {
+            items.map(async (item) => {
                 await models.OutletStocks.decrement('qty', { by: item.qty, where: item.id })
             })
 
