@@ -4,7 +4,8 @@
   "description": "Backend service for Bussiness Helper using NPM and MySQL",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node app.js"
   },
   "author": "Akbarsn",
   "license": "ISC",

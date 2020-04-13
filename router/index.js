@@ -28,6 +28,8 @@ router.use('/outlet', isAuthenticated, outletRoute)
 router.use('/kasir', isAuthenticated, kasirRoute)
 
 router.get('/test', async (req, res) => {
+    res.send(<h2>Hello World</h2>)
+    res.json({ message: "Hello World" })
 })
 
 module.exports = router
