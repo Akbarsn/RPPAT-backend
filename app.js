@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const session = require('express-session')
+const cors = require('cors')
 const port = process.env.PORT || 5000;
 
 //Importing Router
@@ -19,6 +20,10 @@ app.use(
     saveUninitialized: true
   })
 );
+
+app.options('*', cors())
+
+app.use(cors())
 
 app.use('/', appRoute)
 
