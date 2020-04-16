@@ -19,9 +19,9 @@ router.use('/petani', isAuthenticated, petaniRoute)
 
 router.use('/kemasan', isAuthenticated, kemasanRoute)
 
-router.use('/bahan-tambah', isAuthenticated, bahanTambahRoute)
+router.use('/bahan-tambahan', isAuthenticated, bahanTambahRoute)
 
-router.use('/ukm', isAuthenticated, UMKMRoute)
+router.use('/umkm', isAuthenticated, UMKMRoute)
 
 router.use('/outlet', isAuthenticated, outletRoute)
 

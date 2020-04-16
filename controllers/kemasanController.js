@@ -4,29 +4,38 @@ const { Op } = require('sequelize')
 module.exports = {
     async getHomepage(req, res, next) {
         try {
-            await models.sequelize.transaction(async (t) => {
+            let trans = await models.sequelize.transaction(async (t) => {
                 const allStock = await models.PackageStocks.findAll({
                     where: {
                         owner: req.user.id
                     }
                 }, { transaction: t })
-                const history = await models.Transaction.findAll({
+                const history = await models.Transactions.findAll({
                     where: {
-                        $or: {
-                            from: req.user.id,
-                            to: req.user.id
-                        }
+                        from: req.user.id,
                     }
                 }, { transaction: t })
 
                 return { allStock, history }
             })
 
-            if (allStock && history) {
+            let buying = 0;
+            trans.allStock.map((stock) => {
+                buying += stock.buyPrice
+            })
+
+            let selling = 0;
+            trans.history.map((transaction) => {
+                selling += transaction.total
+            })
+
+            trans = {...trans, buying, selling}
+
+            if (trans) {
                 res.status(200).json({
                     message: "Success",
-                    data: { allStock, history }
-                })
+                    data: {trans},
+                });
             } else {
                 const error = new Error("Can't get homepage")
                 next(error)

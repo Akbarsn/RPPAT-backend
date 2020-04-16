@@ -5,28 +5,43 @@ const bcrypt = require('bcryptjs')
 module.exports = {
     async getHomepage(req, res, next) {
         try {
-            await models.sequelize.transaction(async (t) => {
+            let trans = await models.sequelize.transaction(async (t) => {
                 const allStock = await models.OutletStocks.findAll({
                     where: {
                         owner: req.user.id
                     }
                 }, { transaction: t })
-                const history = await models.Transaction.findAll({
+                const history = await models.Transactions.findAll({
                     where: {
-                        $or: {
-                            from: req.user.id,
-                            to: req.user.id
-                        }
+                        to: req.user.id
                     }
                 }, { transaction: t })
+                const selling = await models.POS.findAll({
+                    where: {
+                        owner: req.user.id
+                    }
+                })
 
-                return { allStock, history }
+                return { allStock, history, selling }
             })
 
-            if (allStock && history) {
+            let buying = 0;
+            trans.history.map((transaction) => {
+                buying += transaction.total
+            })
+
+            let selling = 0;
+            trans.selling.map((transaction) => {
+                selling += transaction.total
+            })
+
+            trans = { ...trans, buying, selling }
+
+
+            if (trans) {
                 res.status(200).json({
                     message: "Success",
-                    data: { allStock, history }
+                    data: trans
                 })
             } else {
                 const error = new Error("Can't get homepage")
@@ -320,7 +335,7 @@ module.exports = {
         try {
             const cashiers = await models.Cashiers.findAll({
                 where: {
-                    outletId: userId
+                    workingOn: userId
                 }
             })
 
@@ -330,12 +345,12 @@ module.exports = {
                     data: cashiers
                 })
             } else {
-                const error = new Error("Terjadi kesalahan dalam mengambil data kasir")
+                const error = new Error("Terjadi kesalahan dalam mengambil data kasir 1")
                 next(error)
             }
         } catch (err) {
-            console.log(err)
-            const error = new Error("Terjadi kesalahan dalam mengambil data kasir")
+            console.log(err.message)
+            const error = new Error("Terjadi kesalahan dalam mengambil data kasir 2")
             next(error)
         }
     },

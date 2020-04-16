@@ -21,6 +21,10 @@ module.exports = {
                 const error = new Error("Terjadi kesalahan")
                 next(error)
             }
+        } else {
+            res.status(403)
+            const err = new Error("Silahkan Login terlebih dahulu")
+            next(err)
         }
     },
 

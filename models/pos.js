@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     byCashier: DataTypes.INTEGER
   }, {});
   POS.associate = function (models) {
-    models.POS.hasOne(models.Cashiers)
+    models.POS.hasOne(models.Cashiers, {foreignKey:'id'})
   };
   return POS;
 };

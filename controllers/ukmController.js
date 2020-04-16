@@ -3,18 +3,19 @@ const { Op } = require('sequelize')
 
 module.exports = {
     async getHomepage(req, res, next) {
+        const userId = req.user.id;
         try {
-            await models.sequelize.transaction(async (t) => {
-                const allStock = await models.MaterialStocks.findAll({
+            let trans = await models.sequelize.transaction(async (t) => {
+                const allStock = await models.FactoryStocks.findAll({
                     where: {
                         owner: req.user.id
                     }
                 }, { transaction: t })
-                const history = await models.Transaction.findAll({
+                const history = await models.Transactions.findAll({
                     where: {
-                        $or: {
-                            from: req.user.id,
-                            to: req.user.id
+                        [Op.or]: {
+                            from: userId,
+                            to: userId
                         }
                     }
                 }, { transaction: t })
@@ -22,10 +23,26 @@ module.exports = {
                 return { allStock, history }
             })
 
-            if (allStock && history) {
+            let buying = 0;
+            trans.history.map((transaction) => {
+                if(transaction.to == userId){
+                    buying += transaction.total
+                }
+            })
+
+            let selling = 0;
+            trans.history.map((transaction) => {
+                if(transaction.from == userId){
+                    selling += transaction.total
+                }
+            })
+
+            trans = {...trans, buying, selling}
+
+            if (trans) {
                 res.status(200).json({
                     message: "Success",
-                    data: { allStock, history }
+                    data: trans
                 })
             } else {
                 const error = new Error("Can't get homepage")
@@ -150,10 +167,11 @@ module.exports = {
     },
 
     async postDataProduksi(req, res, next) {
-        const { item, qty, price, weight, type } = req.body;
+        const { item, qty, buyPrice, sellPrice, weight } = req.body;
         const userId = req.user.id;
+        const type = 2
 
-        if (!(item && qty && price && weight && type)) {
+        if (!(item && qty && buyPrice && sellPrice && weight)) {
             res.status(406)
             const err = new Error("Field still empty")
             next(err)
@@ -163,7 +181,8 @@ module.exports = {
                 where: {
                     item: item,
                     weight: weight,
-                    price: price,
+                    buyPrice: buyPrice ,
+                    sellPrice: sellPrice,
                     owner: userId,
                     type: type
                 }
@@ -172,7 +191,7 @@ module.exports = {
             let stock
             if (find === null) {
                 stock = await models.FactoryStocks.create({
-                    item, qty, weight, price, owner: userId, type
+                    item, qty, weight, buyPrice, sellPrice, owner: userId, type
                 })
             } else {
                 stock = await models.FactoryStocks.increment('qty', {

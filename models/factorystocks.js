@@ -4,9 +4,10 @@ module.exports = (sequelize, DataTypes) => {
     item: DataTypes.STRING,
     qty: DataTypes.INTEGER,
     weight: DataTypes.STRING,
-    unit: DataTypes.STRING,
-    grade: DataTypes.CHAR,
-    owner: DataTypes.INTEGER
+    buyPrice: DataTypes.INTEGER,
+    sellPrice:DataTypes.INTEGER,
+    owner: DataTypes.INTEGER,
+    type: DataTypes.INTEGER
   }, {});
   FactoryStocks.associate = function(models) {
     models.FactoryStocks.belongsTo(models.Users, {foreignKey:"id"})
