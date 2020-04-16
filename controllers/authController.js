@@ -61,20 +61,24 @@ module.exports = {
                                 data: user
                             })
                         } else {
+                            res.status(500)
                             const error = new Error("Can't create new user")
                             next(error)
                         }
 
                     } catch (err) {
+                        res.status(500)
                         console.log(err.message)
                         const error = new Error("Can't create new user")
                         next(error)
                     }
                 } else {
+                    res.status(500)
                     const error = new Error("Hash Failed")
                     next(error)
                 }
             } catch (err) {
+                res.status(500)
                 const error = new Error("Hash Failed")
                 next(error)
             }
@@ -90,7 +94,7 @@ module.exports = {
         const { username, password } = req.body;
 
         try {
-            const user = await models.Users.findOne({
+            let user = await models.Users.findOne({
                 where:
                     { username: username }
             })
@@ -109,21 +113,26 @@ module.exports = {
                         req.session.token = token;
                         res.status(200).json({
                             message: "Login Successful",
+                            user: user,
                             data: token
                         })
                     } else {
+                        res.status(500)
                         const error = new Error("Gagal membuat token")
                         next(error)
                     }
                 } else {
+                    res.status(500)
                     const error = new Error("Password salah")
                     next(error)
                 }
             } else {
+                res.status(500)
                 const error = new Error("Username tidak ditemukan")
                 next(error)
             }
         } catch (err) {
+            res.status(500)
             console.log(err.message)
             const error = new Error("Terjadi kesalahan")
             next(error)

@@ -17,6 +17,7 @@ module.exports = {
                     next(err)
                 }
             } catch (err) {
+                res.status(500)
                 console.log(err)
                 const error = new Error("Terjadi kesalahan")
                 next(error)

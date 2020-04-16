@@ -45,10 +45,12 @@ module.exports = {
                     data: trans,
                 });
             } else {
+                res.status(500)
                 const error = new Error("Can't get homepage");
                 next(error);
             }
         } catch (err) {
+            res.status(500)
             console.log(err.message);
             const error = new Error("Can't get homepage");
             next(error);
@@ -80,11 +82,13 @@ module.exports = {
                     data: sell,
                 });
             } else {
+                res.status(500)
                 console.log(sell);
                 const err = new Error("Can't get laporan penjualan");
                 next(err);
             }
         } catch (error) {
+            res.status(500)
             console.log(error);
             const err = new Error("Can't get laporan penjualan");
             next(err);
@@ -116,11 +120,12 @@ module.exports = {
                     data: stock,
                 });
             } else {
-                console.log(stock);
+                res.status(500)
                 const err = new Error("Can't get laporan stok kemasan");
                 next(err);
             }
         } catch (error) {
+            res.status(500)
             console.log(error);
             const err = new Error("Can't get laporan stok kemasan");
             next(err);
@@ -172,10 +177,12 @@ module.exports = {
                     data: (find === null ? stock : find),
                 });
             } else {
+                res.status(500)
                 const err = new Error("Can't add stok panen");
                 next(err);
             }
         } catch (error) {
+            res.status(500)
             console.log(error.message);
             const err = new Error("Cant add stok panen");
             next(err);
@@ -194,10 +201,12 @@ module.exports = {
                     data: stocks,
                 });
             } else {
+                res.status(500)
                 const error = new Error("Terjadi kegagalan membuka lihat stok");
                 next(error);
             }
         } catch (err) {
+            res.status(500)
             const error = new Error("Terjadi kegagalan membuka lihat stok");
             next(error);
         }
@@ -217,12 +226,14 @@ module.exports = {
                     data: history,
                 });
             } else {
+                res.status(500)
                 const error = new Error(
                     "Terjadi kesalahan saat membuka riwayat transaksi"
                 );
                 next(error);
             }
         } catch (err) {
+            res.status(500)
             const error = new Error(
                 "Terjadi kesalahan saat membuka riwayat transaksi"
             );
@@ -262,10 +273,12 @@ module.exports = {
                     });
                 }
             } else {
+                res.status(500)
                 const err = new Error("Terjadi kesalahan dalam konfirmasi pembayaran");
                 next(err);
             }
         } catch (error) {
+            res.status(500)
             const err = new Error("Terjadi kesalahan dalam konfirmasi pembayaran");
             next(err);
         }
