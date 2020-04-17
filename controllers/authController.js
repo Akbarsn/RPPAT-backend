@@ -104,7 +104,8 @@ module.exports = {
 
                 if (isVerified) {
                     const payload = {
-                        "id": user.id
+                        "id": user.id,
+                        "role": user.role
                     }
 
                     const token = jwt.sign(payload, KEY)
