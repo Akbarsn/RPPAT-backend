@@ -4,7 +4,9 @@ const KEY = process.env.JWT_SECRET
 
 module.exports = {
     isAuthenticated(req, res, next) {
-        const token = req.session.token;
+        const header = req.headers.authorization;
+        const token = header.split(" ")[1];
+        // const token = req.session.token;
         if (token) {
             try {
                 const payload = jwt.verify(token, KEY)

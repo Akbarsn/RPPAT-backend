@@ -22,7 +22,7 @@ router.use('/umkm', isAuthenticated, UMKMRoute)
 
 router.use('/outlet', isAuthenticated, outletRoute)
 
-router.use('/kasir', isAuthenticated, kasirRoute)
+router.use('/kasir', kasirRoute)
 
 router.get('/test', async (req, res) => {
     res.json({ message: "Hello World" })
