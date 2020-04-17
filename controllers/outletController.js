@@ -70,9 +70,9 @@ module.exports = {
         const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
 
         try {
-            const sell = await models.Transactions.findAll({
+            const sell = await models.POs.findAll({
                 where: {
-                    from: req.user.id,
+                    owner: req.user.id,
                     createdAt: {
                         [Op.lte]: nexMonth,
                         [Op.gte]: prevMonth,
