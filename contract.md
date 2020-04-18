@@ -102,7 +102,20 @@
      - 200
      ```
      message : Successful Login
-     user : user.data
+     user : {
+       name,
+       fullName,
+       IDCard,
+       address,
+       usernama,
+       password,
+       bankAccount,
+       bankNumber,
+       email,
+       phoneNumber,
+       role,
+       profileImage
+     }
      token : token
      ```
      - 406
@@ -134,7 +147,20 @@
      - 200
      ```
      message : User Registered
-     data : user.data
+     data : {
+       name,
+       fullName,
+       IDCard,
+       address,
+       usernama,
+       password,
+       bankAccount,
+       bankNumber,
+       email,
+       phoneNumber,
+       role,
+       profileImage
+     }
      ```
      - 406
      ```
@@ -158,7 +184,30 @@
      - 200
      ```
      message : "Success"
-     data :
+     data : {
+       allStocks: [
+         {
+         item,
+         grade,
+         qty,
+         price,
+         unit,
+         owner
+       }
+       ],
+       history: [
+         {
+         from,
+         to,
+         total,
+         itemDetail,
+         proof,
+         status,
+         name
+       }
+       ],
+       selling
+     }
      ```
      - 500
      ```
@@ -174,7 +223,17 @@
      - 200
      ```
      message : "Success"
-     data : dataPenjualan
+     data : [
+       {
+         from,
+         to,
+         total,
+         itemDetail,
+         proof,
+         status,
+         name
+       }
+     ]
      ```
      - 500
      ```
@@ -190,7 +249,16 @@
      - 200
      ```
      message : "Success"
-     data : data Stok Panen
+     data : [
+       {
+       item,
+       grade,
+       qty,
+       price,
+       unit,
+       owner
+     }
+     ]
      ```
      - 500
      ```
@@ -211,7 +279,16 @@
      - 200
      ```
      message : "Success"
-     data : Stok yang ditambahkan
+     data : [
+       {
+       item,
+       grade,
+       qty,
+       price,
+       unit,
+       owner
+     }
+     ]
      ```
      - 500
      ```
@@ -226,7 +303,16 @@
      - 200
      ```
      message : "Success"
-     data : Stocks
+     data : [
+       {
+       item,
+       grade,
+       qty,
+       price,
+       unit,
+       owner
+     }
+     ]
      ```
      - 500
      ```
@@ -241,7 +327,17 @@
      - 200
      ```
      message : "Success"
-     data : Transaksi
+     data : [
+       {
+         from,
+         to,
+         total,
+         itemDetail,
+         proof,
+         status,
+         name
+       }
+     ]
      ```
      - 500
      ```
@@ -257,7 +353,16 @@
      - 200
      ```
      message : "Success"
-     data : {FarmerStocks}
+     data : [
+       {
+       item,
+       grade,
+       qty,
+       price,
+       unit,
+       owner
+     }
+     ]
      ```
      - 500
      ```
@@ -276,7 +381,32 @@
      - 200
      ```
      message : "Success"
-     data : {totalStok, riwayatTransaksi}
+     data : {
+       trans:{
+         allStock: [
+           {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+         }
+         ],
+         history: [
+           {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+         ],
+        selling,
+        buying
+       }
+     }
      ```
      - 500
      ```
@@ -292,7 +422,15 @@
      - 200
      ```
      message : "Success"
-     data : dataPenjualan
+     data : [
+       {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+     ]
      ```
      - 500
      ```
@@ -308,7 +446,17 @@
      - 200
      ```
      message : "Success"
-     data : dataPembelian
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -329,7 +477,15 @@
      - 200
      ```
      message : "Success"
-     data : Stok yang ditambahkan
+     data : [
+       {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+     ]
      ```
      - 500
      ```
@@ -344,7 +500,15 @@
      - 200
      ```
      message : "Success"
-     data : Stocks
+     data : [
+       {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+     ]
      ```
      - 500
      ```
@@ -359,7 +523,17 @@
      - 200
      ```
      message : "Success"
-     data : Transaksi
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -375,7 +549,15 @@
      - 200
      ```
      message : "Success"
-     data : {MaterialStocks}
+     data : [
+       {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+     ]
      ```
      - 500
      ```
@@ -394,7 +576,30 @@
      - 200
      ```
      message : "Success"
-     data : {totalStok, riwayatTransaksi}
+     data : {
+       allStock: [
+         {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+       ],
+        history: [
+          {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+        ],
+        selling,
+        buying
+     }
      ```
      - 500
      ```
@@ -410,7 +615,15 @@
      - 200
      ```
      message : "Success"
-     data : dataPenjualan
+     data : [
+       {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+     ]
      ```
      - 500
      ```
@@ -426,7 +639,17 @@
      - 200
      ```
      message : "Success"
-     data : dataPembelian
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -448,7 +671,15 @@
      - 200
      ```
      message : "Success"
-     data : Stok yang ditambahkan
+     data : [
+       {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+     ]
      ```
      - 500
      ```
@@ -464,7 +695,15 @@
      - 200
      ```
      message : "Success"
-     data : Stocks
+     data : [
+       {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+     ]
      ```
      - 500
      ```
@@ -480,7 +719,17 @@
      - 200
      ```
      message : "Success"
-     data : Transaksi
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -497,7 +746,15 @@
      - 200
      ```
      message : "Success"
-     data : {PackageStocks}
+     data : [
+       {
+           item,
+           unit,
+           qty,
+           sellPrice,
+           buyPrice
+        }
+     ]
      ```
      - 500
      ```
@@ -516,7 +773,32 @@
      - 200
      ```
      message : "Success"
-     data : {totalStok, riwayatTransaksi}
+     data : {
+       allStock:[
+         {
+         item,
+         qty,
+         weight,
+         buyPrice,
+         sellPrice,
+         owner,
+         type
+       }
+       ],
+       history:[
+         {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+       ],
+        selling,
+        buying
+     }
      ```
      - 500
      ```
@@ -532,7 +814,17 @@
      - 200
      ```
      message : "Success"
-     data : dataPenjualan
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -548,7 +840,17 @@
      - 200
      ```
      message : "Success"
-     data : dataPembelian
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -564,7 +866,17 @@
      - 200
      ```
      message : "Success"
-     data : dataProduksi
+     data : [
+       {
+         item,
+         qty,
+         weight,
+         buyPrice,
+         sellPrice,
+         owner,
+         type
+       }
+     ]
      ```
      - 500
      ```
@@ -587,7 +899,17 @@
      - 200
      ```
      message : "Success"
-     data : Stok yang ditambahkan
+     data : [
+       {
+         item,
+         qty,
+         weight,
+         buyPrice,
+         sellPrice,
+         owner,
+         type
+       }
+     ]
      ```
      - 500
      ```
@@ -603,7 +925,17 @@
      - 200
      ```
      message : "Success"
-     data : Stocks
+     data : [
+       {
+         item,
+         qty,
+         weight,
+         buyPrice,
+         sellPrice,
+         owner,
+         type
+       }
+     ]
      ```
      - 500
      ```
@@ -619,7 +951,17 @@
      - 200
      ```
      message : "Success"
-     data : Stocks
+     data : [
+       {
+         item,
+         qty,
+         weight,
+         buyPrice,
+         sellPrice,
+         owner,
+         type
+       }
+     ]
      ```
      - 500
      ```
@@ -635,7 +977,17 @@
      - 200
      ```
      message : "Success"
-     data : Transaksi
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -650,7 +1002,32 @@
      - 200
      ```
      message : "Success"
-     data : {FarmerStocks}
+     data : [
+       {
+       name,
+       fullName,
+       IDCard,
+       address,
+       username,
+       password,
+       bankAccount,
+       bankNumber,
+       email,
+       phoneNumber,
+       role,
+       profilImage,
+       apples: [
+          {
+          item,
+          grade,
+          qty,
+          price,
+          unit,
+          owner
+        }
+       ]
+      }
+     ]
      ```
      - 500
      ```
@@ -664,7 +1041,32 @@
       - 200
       ```
       message : "Success"
-      data : {MaterialStocks}
+      data : [
+       {
+       name,
+       fullName,
+       IDCard,
+       address,
+       username,
+       password,
+       bankAccount,
+       bankNumber,
+       email,
+       phoneNumber,
+       role,
+       profilImage,
+       materials:[
+          {
+          item,
+          qty,
+          unit,
+          sellPrice,
+          buyPrice,
+          owner
+        }
+       ]
+      }
+      ]
       ```
       - 500
       ```
@@ -678,7 +1080,32 @@
       - 200
       ```
       message : "Success"
-      data : {PackageStocks}
+      data : [
+       {
+       name,
+       fullName,
+       IDCard,
+       address,
+       username,
+       password,
+       bankAccount,
+       bankNumber,
+       email,
+       phoneNumber,
+       role,
+       profilImage,
+       packages: [
+          {
+          item,
+          qty,
+          sellPrice,
+          buyPrice,
+          unit,
+          owner
+        }
+       ]
+      }
+      ]
       ```
       - 500
       ```
@@ -693,7 +1120,21 @@
       - 200
       ```
       message : "Success"
-      data : {Users, Stocks}
+      data : {
+       name,
+       fullName,
+       IDCard,
+       address,
+       username,
+       password,
+       bankAccount,
+       bankNumber,
+       email,
+       phoneNumber,
+       role,
+       profilImage,
+       apples or materials or packages
+      }
       ```
       - 500
       ```
@@ -711,7 +1152,15 @@
       - 200
       ```
       message : "Success"
-      data : {Transactions}
+      data : {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
       ```
       - 500
       ```
@@ -728,7 +1177,15 @@
       - 200
       ```
       message : "Success"
-      data : {Transactions}
+      data : {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
       ```
       - 500
       ```
@@ -744,7 +1201,15 @@
       - 200
       ```
       message : "Success"
-      data : {Transactions}
+      data : {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
       ```
       - 500
       ```
@@ -760,7 +1225,15 @@
       - 200
       ```
       message : "Success"
-      data : {Transactions}
+      data : {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
       ```
       - 500
       ```
@@ -778,7 +1251,32 @@
      - 200
      ```
      message : "Success"
-     data : {totalStok, riwayatTransaksi}
+     data : {
+       allStock:[
+         {
+           item,
+           itemImage,
+           qty,
+           weight,
+           buyPrice,
+           sellPrice,
+           owner
+         }
+       ],
+       history:[
+         {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+       ],
+       buying,
+       selling
+     }
      ```
      - 500
      ```
@@ -794,7 +1292,17 @@
      - 200
      ```
      message : "Success"
-     data : dataPenjualan
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -810,7 +1318,17 @@
      - 200
      ```
      message : "Success"
-     data : dataPembelian
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -826,7 +1344,17 @@
      - 200
      ```
      message : "Success"
-     data : Stocks
+     data : [
+       {
+           item,
+           itemImage,
+           qty,
+           weight,
+           buyPrice,
+           sellPrice,
+           owner
+         }
+     ]
      ```
      - 500
      ```
@@ -842,7 +1370,17 @@
      - 200
      ```
      message : "Success"
-     data : Transaksi
+     data : [
+       {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
+     ]
      ```
      - 500
      ```
@@ -858,7 +1396,33 @@
      - 200
      ```
      message : "Success"
-     data : {FactoryStocks}
+     data : [
+       {
+       name,
+       fullName,
+       IDCard,
+       address,
+       username,
+       password,
+       bankAccount,
+       bankNumber,
+       email,
+       phoneNumber,
+       role,
+       profilImage,
+       products: [
+          {
+           item,
+           itemImage,
+           qty,
+           weight,
+           buyPrice,
+           sellPrice,
+           owner
+         }
+       ]
+      }
+      ]
      ```
      - 500
      ```
@@ -874,7 +1438,31 @@
      - 200
      ```
      message : "Success"
-     data : {Users, Stocks}
+     data : {
+       name,
+       fullName,
+       IDCard,
+       address,
+       username,
+       password,
+       bankAccount,
+       bankNumber,
+       email,
+       phoneNumber,
+       role,
+       profilImage,
+       products: [
+          {
+           item,
+           itemImage,
+           qty,
+           weight,
+           buyPrice,
+           sellPrice,
+           owner
+         }
+       ]
+      }
      ```
      - 500
      ```
@@ -892,7 +1480,15 @@
      - 200
      ```
      message : "Success"
-     data : {Transactions}
+     data : {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
      ```
      - 500
      ```
@@ -909,7 +1505,15 @@
      - 200
      ```
      message : "Success"
-     data : {Transactions}
+     data : {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
      ```
      - 500
      ```
@@ -925,7 +1529,15 @@
       - 200
       ```
       message : "Success"
-      data : {Transactions}
+      data : {
+          from,
+          to,
+          total,
+          itemDetail,
+          proof,
+          status,
+          name
+        }
       ```
       - 500
       ```
@@ -940,7 +1552,14 @@
       - 200
       ```
       message : "Success"
-      data : {Cashiers}
+      data : [
+          {
+          username,
+          password,
+          fullName,
+          workingOn
+        }
+      ]
       ```
       - 500
       ```
@@ -959,7 +1578,12 @@
       - 200
       ```
       message : "Success"
-      data : {Cashiers}
+      data : {
+          username,
+          password,
+          fullName,
+          workingOn
+        }
       ```
       - 500
       ```
@@ -976,7 +1600,17 @@
      - 200
      ```
      message : "Success"
-     data : {OutletStocks}
+     data : [
+       {
+           item,
+           itemImage,
+           qty,
+           weight,
+           buyPrice,
+           sellPrice,
+           owner
+         }
+     ]
      ```
      - 500
      ```
@@ -993,7 +1627,12 @@
      - 200
      ```
      message : "Success"
-     data : {Cashiers}
+     data : {
+       itemDetail,
+       total,
+       owner,
+       byCashier
+     }
      ```
      - 500
      ```
