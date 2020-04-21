@@ -329,7 +329,7 @@ module.exports = {
         const userId = req.user.id
 
         try {
-            const notif = await models.FactoryStocks.findAll({
+            const notif = await models.Transactions.findAll({
                 where: {
                     [Op.or]: {
                         from: userId,
@@ -338,8 +338,7 @@ module.exports = {
                     [Op.not]: {
                         status: 3
                     }
-                },
-                order: ['updated_at', 'desc']
+                }
             })
 
             let to = [];
