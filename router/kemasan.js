@@ -1,25 +1,34 @@
-const router = require('express').Router()
-const { getHomepage, getLaporanPenjualan, getLaporanStokKemasan, postStokKemasan, getLihatStok, getRiwayat, KonfirmasiPembayaran } = require('../controllers/kemasanController')
+const router = require("express").Router();
+const {
+    getHomepage,
+    getLaporanPenjualan,
+    getLaporanStokKemasan,
+    postStokKemasan,
+    getLihatStok,
+    getRiwayat,
+    KonfirmasiPembayaran,
+    GetNotification,
+    PostEditStok,
+} = require("../controllers/kemasanController");
 
 //Get Homepage
-router.get('/', getHomepage)
+router.get("/", getHomepage);
 
 //Get Laporan
-router.get('/laporan/penjualan', getLaporanPenjualan)
+router.get("/laporan/penjualan", getLaporanPenjualan);
 
-router.get('/laporan/stok-kemasan', getLaporanStokKemasan)
+router.get("/laporan/stok-kemasan", getLaporanStokKemasan);
 
 //Post Data Stok Kemasan
-router.post('/laporan', postStokKemasan)
+router.post("/laporan", postStokKemasan);
 
 //Get Lihat Stok
-router.get('/lihat-stok', getLihatStok)
+router.get("/lihat-stok", getLihatStok);
 
 //Get Riwayat Transaksi
-router.get('/riwayat-transaksi', getRiwayat)
+router.get("/riwayat-transaksi", getRiwayat);
 
 //Konfirmasi Pembayaran
-router.post('/konfirmasi-pembayaran', KonfirmasiPembayaran)
-
+router.post("/konfirmasi-pembayaran", KonfirmasiPembayaran);
 
 module.exports = router;

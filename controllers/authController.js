@@ -191,7 +191,7 @@ module.exports = {
                 phoneNumber: phoneNumber
             }, {
                 where: {
-                    id: id
+                    id: userId
                 }
             })
 
