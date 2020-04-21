@@ -17,7 +17,7 @@ const {
   KonfirmasiPenerimaan,
   BayarTransaksi,
   PostEditStok,
-  GetNotification
+  GetNotification,
 } = require("../controllers/ukmController");
 const multer = require("multer");
 
@@ -70,12 +70,16 @@ router.get("/detail-toko/:shopID", getDetailToko);
 //Post Beli Bahan
 router.post("/beli-bahan", PesanBahan);
 
-router.post("/bayar-transaksi", BayarTransaksi);
+router.post("/bayar-transaksi", upload.single("IDcard"), BayarTransaksi);
 
 //Konfirmasi Pembayaran
 router.post("/konfirmasi-pembayaran", KonfirmasiPembayaran);
 
 //Konfirmasi Penerimaan
 router.post("/terima-barang", KonfirmasiPenerimaan);
+
+router.post("/lihat-stok", PostEditStok)
+
+router.get("/notifikasi", GetNotification)
 
 module.exports = router;

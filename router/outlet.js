@@ -49,4 +49,8 @@ router.get("/kasir", GetTambahKasir);
 
 router.post("/kasir", TambahKasir);
 
+router.post("/lihat-stok", PostEditStok)
+
+router.get("/notifikasi", GetNotification)
+
 module.exports = router;

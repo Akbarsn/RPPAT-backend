@@ -31,4 +31,8 @@ router.get("/riwayat-transaksi", getRiwayat);
 //Konfirmasi Pembayaran
 router.post("/konfirmasi-pembayaran", KonfirmasiPembayaran);
 
+router.post("/lihat-stok", PostEditStok)
+
+router.get("/notifikasi", GetNotification)
+
 module.exports = router;
