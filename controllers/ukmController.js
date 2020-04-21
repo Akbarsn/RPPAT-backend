@@ -285,7 +285,11 @@ module.exports = {
         try {
             const history = await models.Transactions.findAll({
                 where: {
-                    from: req.user.id
+                    [Op.or]: {
+                        from: req.user.id,
+                        to: req.user.id
+                    },
+                    status: 3
                 }
             })
 

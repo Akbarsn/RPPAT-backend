@@ -70,7 +70,7 @@ module.exports = {
         const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
 
         try {
-            const sell = await models.POs.findAll({
+            const sell = await models.POS.findAll({
                 where: {
                     owner: req.user.id,
                     createdAt: {
@@ -161,17 +161,25 @@ module.exports = {
     },
 
     async getRiwayat(req, res, next) {
+        const userId = req.user.id;
         try {
             const history = await models.Transactions.findAll({
                 where: {
-                    from: req.user.id,
+                    to: req.user.id,
+                    status: 3
                 },
             });
+
+            const pos = await models.POS.findAll({
+                where: {
+                    owner: userId
+                }
+            })
 
             if (history) {
                 res.status(200).json({
                     message: "success",
-                    data: history,
+                    data: { history, pos },
                 });
             } else {
                 res.status(500);
