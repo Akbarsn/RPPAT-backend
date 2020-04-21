@@ -138,6 +138,77 @@ module.exports = {
             const error = new Error("Terjadi kesalahan")
             next(error)
         }
+    },
+
+    async GetGantiProfile(req, res, next) {
+        const userId = req.user.id;
+
+        try {
+            const user = await models.Users.findByPk(userId);
+            if (user) {
+                res.status(200).json({
+                    message: "success",
+                    data: user
+                })
+            } else {
+                res.status(500)
+                const error = new Error("Terjadi kesalahan")
+                next(error);
+            }
+        } catch (err) {
+            res.status(500)
+            const error = new Error("Terjadi kesalahan")
+            next(error);
+        }
+    },
+
+    async PostGantiProfile(req, res, next) {
+        const {
+            name,
+            fullName,
+            address,
+            birthDate,
+            username,
+            password,
+            email,
+            bankAccount,
+            bankNumber,
+            phoneNumber,
+        } = req.body;
+        const userId = req.user.id;
+
+        try {
+            const user = await models.Users.update({
+                name: name,
+                fullName: fullName,
+                address: address,
+                birthDate: birthDate,
+                username: username,
+                password: password,
+                email: email,
+                bankAccount: bankAccount,
+                bankNumber: bankNumber,
+                phoneNumber: phoneNumber
+            }, {
+                where: {
+                    id: id
+                }
+            })
+
+            if (user) {
+                res.status(200).json({
+                    message: "Success"
+                })
+            } else {
+                res.status(500)
+                const err = new Error("Terjadi kesalahan")
+                next(err)
+            }
+        } catch (error) {
+            res.status(500)
+            const err = new Error("Terjadi kesalahan")
+            next(err)
+        }
     }
 
 }

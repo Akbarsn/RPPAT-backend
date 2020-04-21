@@ -291,4 +291,82 @@ module.exports = {
             next(err);
         }
     },
+
+    async PostEditStok(req, res, next) {
+        const { id, item, unit, qty, sellPrice, buyPrice } = req.body;
+
+        try {
+            const stock = await models.PackageStocks.update({
+                item: item,
+                unit: unit,
+                qty: qty,
+                sellPrice: sellPrice,
+                buyPrice: buyPrice
+            }, {
+                where: {
+                    id: id
+                }
+            })
+
+            if (stock) {
+                res.status(200).json({
+                    message: "Success"
+                })
+            } else {
+                res.status(500)
+                const error = new Error("Terjadi kesalahan")
+                next(error)
+            }
+        } catch (err) {
+            console.log(err)
+            res.status(500)
+            const error = new Error("Terjadi kesalahan")
+            next(error)
+        }
+    },
+
+    async GetNotification(req, res, next) {
+        const userId = req.user.id
+
+        try {
+            const notif = await models.FactoryStocks.findAll({
+                where: {
+                    [Op.or]: {
+                        from: userId,
+                        to: userId
+                    },
+                    [Op.not]: {
+                        status: 3
+                    }
+                },
+                order: ['updated_at', 'desc']
+            })
+
+            let to = [];
+            let from = [];
+            notif.map((transaction) => {
+                if (transaction.from == userId) {
+                    from.push(transaction)
+                } else {
+                    to.push(transaction)
+                }
+            })
+
+            if (notif) {
+                res.status(200).json({
+                    message: "Success",
+                    data: { from, to }
+                })
+            } else {
+                res.status(500)
+                const error = new Error("Terjadi kesalahan");
+                next(error)
+            }
+        } catch (err) {
+            console.log(err)
+            res.status(500)
+            const error = new Error("Terjadi kesalahan");
+            next(error)
+        }
+    }
 };
