@@ -70,7 +70,7 @@ router.get("/detail-toko/:shopID", getDetailToko);
 //Post Beli Bahan
 router.post("/beli-bahan", PesanBahan);
 
-router.post("/bayar-transaksi", upload.single("IDcard"), BayarTransaksi);
+router.post("/bayar-transaksi", upload.single("file"), BayarTransaksi);
 
 //Konfirmasi Pembayaran
 router.post("/konfirmasi-pembayaran", KonfirmasiPembayaran);
@@ -78,8 +78,8 @@ router.post("/konfirmasi-pembayaran", KonfirmasiPembayaran);
 //Konfirmasi Penerimaan
 router.post("/terima-barang", KonfirmasiPenerimaan);
 
-router.post("/lihat-stok", PostEditStok)
+router.post("/lihat-stok", PostEditStok);
 
-router.get("/notifikasi", GetNotification)
+router.get("/notifikasi", GetNotification);
 
 module.exports = router;
