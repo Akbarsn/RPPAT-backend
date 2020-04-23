@@ -486,23 +486,14 @@ module.exports = {
                     [Op.not]: {
                         status: 3
                     }
-                }
-            })
-
-            let to = [];
-            let from = [];
-            notif.map((transaction) => {
-                if (transaction.from == userId) {
-                    from.push(transaction)
-                } else {
-                    to.push(transaction)
-                }
+                },
+                order:[['updatedAt','DESC']]
             })
 
             if (notif) {
                 res.status(200).json({
                     message: "Success",
-                    data: { from, to }
+                    data: notif
                 })
             } else {
                 res.status(500)

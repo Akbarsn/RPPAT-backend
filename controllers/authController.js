@@ -1,10 +1,10 @@
-require('dotenv').config()
+require("dotenv").config();
 
-const models = require('../models')
-const bcrypt = require('bcryptjs')
-const validator = require('validator')
-const jwt = require('jsonwebtoken')
-const KEY = process.env.JWT_SECRET
+const models = require("../models");
+const bcrypt = require("bcryptjs");
+const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const KEY = process.env.JWT_SECRET;
 
 module.exports = {
     async RegisterHandler(req, res, next) {
@@ -19,10 +19,11 @@ module.exports = {
             bankAccount,
             bankNumber,
             phoneNumber,
-            role
+            role,
         } = req.body;
 
-        const reqValid = validator.isEmail(email) &&
+        const reqValid =
+            validator.isEmail(email) &&
             !validator.isEmpty(name) &&
             !validator.isEmpty(fullName) &&
             !validator.isEmpty(address) &&
@@ -32,18 +33,21 @@ module.exports = {
             !validator.isEmpty(bankAccount) &&
             !validator.isEmpty(bankNumber) &&
             !validator.isEmpty(phoneNumber) &&
-            !validator.isEmpty(role)
+            !validator.isEmpty(role);
         if (reqValid) {
             //Hashing password
             try {
-                const hashedPassword = await bcrypt.hash(password, 12)
+                const hashedPassword = await bcrypt.hash(password, 12);
 
                 if (hashedPassword) {
                     try {
+                        const link = req.file.path.split("/").slice(1, 3);
+                        const newest = "/" + link[0] + "/" + link[1];
+
                         const user = await models.Users.create({
                             name,
                             fullName,
-                            IDcard: req.file.path,
+                            IDcard: newest,
                             address,
                             birthDate,
                             phoneNumber,
@@ -52,41 +56,39 @@ module.exports = {
                             password: hashedPassword,
                             bankAccount,
                             bankNumber,
-                            role
-                        })
+                            role,
+                        });
 
                         if (user) {
                             res.status(200).json({
                                 message: "User Registered",
-                                data: user
-                            })
+                                data: user,
+                            });
                         } else {
-                            res.status(500)
-                            const error = new Error("Can't create new user")
-                            next(error)
+                            res.status(500);
+                            const error = new Error("Can't create new user");
+                            next(error);
                         }
-
                     } catch (err) {
-                        res.status(500)
-                        console.log(err.message)
-                        const error = new Error("Can't create new user")
-                        next(error)
+                        res.status(500);
+                        console.log(err);
+                        const error = new Error("Can't create new user");
+                        next(error);
                     }
                 } else {
-                    res.status(500)
-                    const error = new Error("Hash Failed")
-                    next(error)
+                    res.status(500);
+                    const error = new Error("Hash Failed");
+                    next(error);
                 }
             } catch (err) {
-                res.status(500)
-                const error = new Error("Hash Failed")
-                next(error)
+                res.status(500);
+                const error = new Error("Hash Failed");
+                next(error);
             }
-
         } else {
-            res.status(406)
+            res.status(406);
             const error = new Error("Field still empty");
-            next(error)
+            next(error);
         }
     },
 
@@ -95,48 +97,47 @@ module.exports = {
 
         try {
             let user = await models.Users.findOne({
-                where:
-                    { username: username }
-            })
+                where: { username: username },
+            });
 
             if (user) {
-                const isVerified = await bcrypt.compare(password, user.password)
+                const isVerified = await bcrypt.compare(password, user.password);
 
                 if (isVerified) {
                     const payload = {
-                        "id": user.id,
-                        "role": user.role
-                    }
+                        id: user.id,
+                        role: user.role,
+                    };
 
-                    const token = jwt.sign(payload, KEY)
+                    const token = jwt.sign(payload, KEY);
 
                     if (token) {
                         req.session.token = token;
                         res.status(200).json({
                             message: "Login Successful",
                             user: user,
-                            data: token
-                        })
+                            data: token,
+                        });
                     } else {
-                        res.status(500)
-                        const error = new Error("Gagal membuat token")
-                        next(error)
+                        res.status(500);
+                        const error = new Error("Gagal membuat token");
+                        next(error);
                     }
                 } else {
-                    res.status(500)
-                    const error = new Error("Password salah")
-                    next(error)
+                    res.status(500);
+                    const error = new Error("Password salah");
+                    next(error);
                 }
             } else {
-                res.status(500)
-                const error = new Error("Username tidak ditemukan")
-                next(error)
+                res.status(500);
+                const error = new Error("Username tidak ditemukan");
+                next(error);
             }
         } catch (err) {
-            res.status(500)
-            console.log(err.message)
-            const error = new Error("Terjadi kesalahan")
-            next(error)
+            res.status(500);
+            console.log(err.message);
+            const error = new Error("Terjadi kesalahan");
+            next(error);
         }
     },
 
@@ -148,16 +149,16 @@ module.exports = {
             if (user) {
                 res.status(200).json({
                     message: "success",
-                    data: user
-                })
+                    data: user,
+                });
             } else {
-                res.status(500)
-                const error = new Error("Terjadi kesalahan")
+                res.status(500);
+                const error = new Error("Terjadi kesalahan");
                 next(error);
             }
         } catch (err) {
-            res.status(500)
-            const error = new Error("Terjadi kesalahan")
+            res.status(500);
+            const error = new Error("Terjadi kesalahan");
             next(error);
         }
     },
@@ -178,37 +179,39 @@ module.exports = {
         const userId = req.user.id;
 
         try {
-            const user = await models.Users.update({
-                name: name,
-                fullName: fullName,
-                address: address,
-                birthDate: birthDate,
-                username: username,
-                password: password,
-                email: email,
-                bankAccount: bankAccount,
-                bankNumber: bankNumber,
-                phoneNumber: phoneNumber
-            }, {
-                where: {
-                    id: userId
+            const user = await models.Users.update(
+                {
+                    name: name,
+                    fullName: fullName,
+                    address: address,
+                    birthDate: birthDate,
+                    username: username,
+                    password: password,
+                    email: email,
+                    bankAccount: bankAccount,
+                    bankNumber: bankNumber,
+                    phoneNumber: phoneNumber,
+                },
+                {
+                    where: {
+                        id: userId,
+                    },
                 }
-            })
+            );
 
             if (user) {
                 res.status(200).json({
-                    message: "Success"
-                })
+                    message: "Success",
+                });
             } else {
-                res.status(500)
-                const err = new Error("Terjadi kesalahan")
-                next(err)
+                res.status(500);
+                const err = new Error("Terjadi kesalahan");
+                next(err);
             }
         } catch (error) {
-            res.status(500)
-            const err = new Error("Terjadi kesalahan")
-            next(err)
+            res.status(500);
+            const err = new Error("Terjadi kesalahan");
+            next(err);
         }
-    }
-
-}
+    },
+};

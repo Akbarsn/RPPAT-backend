@@ -25,6 +25,8 @@ app.options('*', cors())
 
 app.use(cors())
 
+app.use(express.static('upload'))
+
 app.use('/', appRoute)
 
 function notFound(req, res, next) {
