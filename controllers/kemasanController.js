@@ -338,8 +338,8 @@ module.exports = {
           [Op.not]: {
             status: 3,
           },
-          order:[['updatedAt','DESC']]
         },
+        order:[['updatedAt','DESC']]
       });
 
       if (notif) {

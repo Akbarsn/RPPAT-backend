@@ -688,7 +688,7 @@ module.exports = {
             status: 3,
           },
         },
-        order: [["updatedAt", "DESC"]],
+        order: [['updatedAt', 'DESC']],
       });
 
       if (notif) {
@@ -702,7 +702,7 @@ module.exports = {
         next(error);
       }
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
       res.status(500);
       const error = new Error("Terjadi kesalahan");
       next(error);

@@ -329,12 +329,11 @@ module.exports = {
       const notif = await models.Transactions.findAll({
         where: {
           from: userId,
-
           [Op.not]: {
             status: 3,
           },
         },
-        order: [['updatedAt', 'DESC']]
+        order: [["updatedAt", "DESC"]],
       });
 
       if (notif) {
