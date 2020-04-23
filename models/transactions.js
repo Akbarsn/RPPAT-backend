@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       to: DataTypes.INTEGER,
       total: DataTypes.INTEGER,
       itemDetail: DataTypes.TEXT,
-      paymentMethod:DataTypes.STRING,
+      payment:DataTypes.STRING,
       proof: DataTypes.STRING,
       status: DataTypes.INTEGER,
       updatedAt: DataTypes.DATE
