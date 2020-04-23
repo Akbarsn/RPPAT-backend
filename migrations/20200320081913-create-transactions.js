@@ -29,7 +29,7 @@ module.exports = {
       status: {
         type: Sequelize.INTEGER
       },
-      paymentMethod:{
+      payment:{
         type: Sequelize.STRING
       },
       createdAt: {
