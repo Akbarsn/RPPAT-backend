@@ -578,12 +578,20 @@ module.exports = {
 
         const isChanged = await models.sequelize.transaction(async (t) => {
           JSON.parse(items.itemDetail).map(async (item) => {
+            let name;
+            if (item.grade) {
+              name = item.item + item.grade;
+            } else {
+              name = item.item;
+            }
+
             let find = await models.FactoryStocks.findOne(
               {
                 where: {
-                  item: item.item,
-                  weight: item.weight,
-                  price: item.price,
+                  item: name,
+                  weight: item.unit,
+                  buyPrice: item.price,
+                  sellPrice: item.price,
                   owner: userId,
                   type: 2,
                 },
@@ -596,8 +604,9 @@ module.exports = {
                 {
                   item: item.item,
                   qty: item.qty,
-                  weight: item.weight,
-                  price: item.price,
+                  weight: item.unit,
+                  buyPrice: item.price,
+                  sellPrice: item.price,
                   owner: userId,
                   type: 2,
                 },
