@@ -339,7 +339,18 @@ module.exports = {
             status: 3,
           },
         },
-        order:[['updatedAt','DESC']]
+        order: [["updatedAt", "DESC"]],
+      });
+
+      let i = 0;
+      notif.map((item) => {
+        if (
+          (item.from == userId && item.status == 2) ||
+          (item.from == userId && item.status == 0)
+        ) {
+          notif.splice(i, 1);
+        }
+        i++;
       });
 
       if (notif) {

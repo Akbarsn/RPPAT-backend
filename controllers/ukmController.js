@@ -453,15 +453,16 @@ module.exports = {
   },
 
   async PesanBahan(req, res, next) {
-    const { from, total, items, payment } = req.body;
+    const { from, total, items, banks, name } = req.body;
 
     try {
       const order = await models.Transactions.create({
         from,
         to: req.user.id,
         total,
+        name: name,
         itemDetail: JSON.stringify(items),
-        payment: payment,
+        payment: banks,
         proof: "",
         status: 0,
       });
@@ -688,7 +689,23 @@ module.exports = {
             status: 3,
           },
         },
-        order: [['updatedAt', 'DESC']],
+        order: [["updatedAt", "DESC"]],
+      });
+
+      let i = 0;
+      notif.map((item) => {
+        if (
+          (item.from == userId && item.status == 2) ||
+          (item.from == userId && item.status == 0)
+        ) {
+          notif.splice(i, 1);
+        }
+
+        if (item.to == userId && item.status == 1) {
+          notif.splice(i, 1);
+        }
+
+        i++;
       });
 
       if (notif) {
