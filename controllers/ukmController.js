@@ -568,13 +568,10 @@ module.exports = {
     const userId = req.user.id;
 
     try {
-      const order = await models.Transactions.update(
-        { status: 3 },
-        { where: { id: id } }
-      );
-
-      if (order) {
-        const items = await models.Transactions.findOne({ where: { id: id } });
+      try {
+        const items = await models.Transactions.findOne({
+          where: { id: id },
+        });
 
         const isChanged = await models.sequelize.transaction(async (t) => {
           JSON.parse(items.itemDetail).map(async (item) => {
@@ -593,7 +590,7 @@ module.exports = {
                   buyPrice: item.price,
                   sellPrice: item.price,
                   owner: userId,
-                  type: 2,
+                  type: 1,
                 },
               },
               { transaction: t }
@@ -608,7 +605,7 @@ module.exports = {
                   buyPrice: item.price,
                   sellPrice: item.price,
                   owner: userId,
-                  type: 2,
+                  type: 1,
                 },
                 { transaction: t }
               );
@@ -626,17 +623,22 @@ module.exports = {
               );
             }
           });
+          const order = await models.Transactions.update(
+            { status: 3 },
+            { where: { id: id } }
+          );
 
-          return true;
+          if (order) {
+            return true;
+          }
         });
-
         if (isChanged) {
           res.status(200).json({
             message: "Success",
             data: items,
           });
         }
-      } else {
+      } catch (error) {
         res.status(500);
         const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
         next(err);
