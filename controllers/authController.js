@@ -41,13 +41,11 @@ module.exports = {
 
                 if (hashedPassword) {
                     try {
-                        const link = req.file.path.split("/").slice(1, 3);
-                        const newest = "/" + link[0] + "/" + link[1];
 
                         const user = await models.Users.create({
                             name,
                             fullName,
-                            IDcard: newest,
+                            IDcard: req.file.path,
                             address,
                             birthDate,
                             phoneNumber,

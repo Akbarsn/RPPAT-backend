@@ -1,13 +1,13 @@
-const express = require('express')
-const app = express()
-const session = require('express-session')
-const cors = require('cors')
+const express = require("express");
+const app = express();
+const session = require("express-session");
+const cors = require("cors");
 const port = process.env.PORT || 5000;
 
 //Importing Router
-const appRoute = require('./router')
+const appRoute = require("./router");
 
-app.use(express.json())
+app.use(express.json());
 
 //Express body parser
 app.use(express.urlencoded({ extended: true }));
@@ -17,37 +17,37 @@ app.use(
   session({
     secret: "secret",
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 );
 
-app.options('*', cors())
+app.options("*", cors());
 
-app.use(cors())
+app.use(cors());
 
-app.use(express.static('upload'))
+app.use("/upload", express.static("upload"));
 
-app.use('/', appRoute)
+app.use("/", appRoute);
 
 function notFound(req, res, next) {
-    res.status(404)
-    res.json({
-        message: "Page Not Found"
-    })
+  res.status(404);
+  res.json({
+    message: "Page Not Found",
+  });
 }
 
-app.use(notFound)
+app.use(notFound);
 
 function errorHandler(err, req, res, next) {
-    res.status(res.statusCode || 500)
-    res.json({
-        status:"Error",
-        message:err.message
-    })
+  res.status(res.statusCode || 500);
+  res.json({
+    status: "Error",
+    message: err.message,
+  });
 }
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 app.listen(port, () => {
-    console.log(`Server is listening to ${port}`);
+  console.log(`Server is listening to ${port}`);
 });
