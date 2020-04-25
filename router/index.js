@@ -18,7 +18,7 @@ router.use("/auth", authorization);
 
 router.get("/ganti-profile", isAuthenticated, GetGantiProfile);
 
-router.get("/ganti-profile", isAuthenticated, PostGantiProfile);
+router.post("/ganti-profile", isAuthenticated, PostGantiProfile);
 
 router.use("/petani", isAuthenticated, petaniRoute);
 
@@ -31,6 +31,13 @@ router.use("/umkm", isAuthenticated, UMKMRoute);
 router.use("/outlet", isAuthenticated, outletRoute);
 
 router.use("/kasir", kasirRoute);
+
+router.get("/test", async (req, res) => {
+  const notif = await models.Transactions.findAll({}) 
+  res.json({
+    notif
+  });
+});
 
 router.get("/users", async (req, res) => {
   const users = await models.Users.findAll();
