@@ -7,7 +7,7 @@ const KEY = process.env.JWT_SECRET;
 module.exports = {
     async GetPage(req, res, next) {
         const outletId = req.user.outletId;
-
+        console.log(req.user)
         try {
             const items = await models.OutletStocks.findAll({
                 where: {
@@ -87,7 +87,7 @@ module.exports = {
                     if (checkPass) {
                         const payload = {
                             id: user.id,
-                            outletId: user.outletId,
+                            outletId: user.workingOn,
                         };
 
                         const token = await jwt.sign(payload, KEY);
