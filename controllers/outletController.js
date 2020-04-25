@@ -251,16 +251,17 @@ module.exports = {
   },
 
   async PesanProduk(req, res, next) {
-    const { from, total, items, payment } = req.body;
+    const { from, total, items, banks, name } = req.body;
 
     try {
       const order = await models.Transactions.create({
         from,
         to: req.user.id,
         total,
+        name: name,
         itemDetail: JSON.stringify(items),
-        payment: payment,
-        proof: null,
+        payment: banks,
+        proof: "",
         status: 0,
       });
 
@@ -325,6 +326,7 @@ module.exports = {
                 where: {
                   item: item.item,
                   weight: item.weight,
+                  buyPrice: price,
                   owner: userId,
                 },
               },
@@ -414,9 +416,11 @@ module.exports = {
     const outletId = req.user.id;
 
     try {
+      const hashed = await bcrypt.hash(password, 12);
+
       const cashier = await models.Cashiers.create({
         username,
-        password,
+        password: hashed,
         fullName,
         workingOn: outletId,
       });
