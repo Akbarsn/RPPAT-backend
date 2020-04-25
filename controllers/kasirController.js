@@ -6,7 +6,7 @@ const KEY = process.env.JWT_SECRET;
 
 module.exports = {
     async GetPage(req, res, next) {
-        const outletId = req.params.outlet_id;
+        const outletId = req.user.outletId;
 
         try {
             const items = await models.OutletStocks.findAll({
@@ -28,6 +28,7 @@ module.exports = {
                 next(error);
             }
         } catch (err) {
+            console.log(err)
             res.status(500);
             const error = new Error(
                 "Terjadi kesalahan pada saat membuka page transaksi"
