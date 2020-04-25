@@ -15,6 +15,22 @@ const {
   GetNotification,
   PostEditStok,
 } = require("../controllers/outletController");
+const multer = require("multer");
+
+//Config for multer
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./upload/bukti_pembayaran");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+//Init multer with Disk Storage
+const upload = multer({
+  storage: storage,
+});
 
 //Get Homepage
 router.get("/", getHomepage);
@@ -40,7 +56,7 @@ router.get("/detail-toko/:shopID", getDetailToko);
 router.post("/beli-produk", PesanProduk);
 
 //Pembayaran
-router.post("/bayar-transaksi", BayarTransaksi);
+router.post("/bayar-transaksi", upload.single("file"), BayarTransaksi);
 
 //Konfirmasi Penerimaan
 router.post("/konfirmasi-penerimaan", KonfirmasiPenerimaan);
@@ -49,8 +65,8 @@ router.get("/kasir", GetTambahKasir);
 
 router.post("/kasir", TambahKasir);
 
-router.post("/lihat-stok", PostEditStok)
+router.post("/lihat-stok", PostEditStok);
 
-router.get("/notifikasi", GetNotification)
+router.get("/notifikasi", GetNotification);
 
 module.exports = router;

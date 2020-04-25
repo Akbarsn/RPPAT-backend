@@ -309,51 +309,47 @@ module.exports = {
 
   async KonfirmasiPenerimaan(req, res, next) {
     const { id } = req.body;
+    const userId = req.user.id;
 
     try {
-      const order = await models.Transactions.update(
-        { status: 3 },
-        { where: { id: id } }
-      );
+      const items = await models.Transactions.findOne({
+        where: { id: id },
+      });
 
-      if (order) {
-        const items = await models.Transactions.findOne({ where: { id: id } });
-
-        const isChanged = await models.sequelize.transaction(async (t) => {
+      const isChanged = await models.sequelize.transaction(async (t) => {
+        try {
           JSON.parse(items.itemDetail).map(async (item) => {
             let find = await models.OutletStocks.findOne(
               {
                 where: {
                   item: item.item,
                   weight: item.weight,
-                  buyPrice: price,
+                  buyPrice: item.price,
+                  sellPrice: item.price,
                   owner: userId,
                 },
               },
               { transaction: t }
             );
 
+            var changed;
             if (find === null) {
-              await models.OutletStocks.create(
-                {
-                  item: item.item,
-                  qty: item.qty,
-                  weight: item.weight,
-                  itemPhoto: "",
-                  buyPrice: item.price,
-                  sellPrice: item.price,
-                  owner: userId,
-                },
-                { transaction: t }
-              );
+              changed = await models.OutletStocks.create({
+                item: item.item,
+                qty: item.qty,
+                itemImage: "",
+                weight: item.weight,
+                buyPrice: item.price,
+                sellPrice: item.price,
+                owner: userId,
+              });
             } else {
-              await models.OutletStocks.increment(
+              changed = await models.OutletStocks.increment(
                 "qty",
                 {
                   by: item.qty,
                   where: {
                     id: find.id,
-                    type: 2,
                   },
                 },
                 { transaction: t }
@@ -362,20 +358,32 @@ module.exports = {
           });
 
           return true;
-        });
+        } catch (err) {
+          console.log(err.message);
+        }
+      });
 
-        if (isChanged) {
+      try {
+        let order = await models.Transactions.update(
+          { status: 3 },
+          { where: { id: id } }
+        );
+
+        if (order) {
           res.status(200).json({
             message: "Success",
             data: items,
           });
+        } else {
+          res.status(500);
+          const err = new Error("Tidak bisa merubah stock atau order");
+          next(err);
         }
-      } else {
-        res.status(500);
-        const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
-        next(err);
+      } catch (err) {
+        console.log(err.message);
       }
     } catch (error) {
+      console.log(error.message);
       res.status(500);
       const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
       next(err);

@@ -76,7 +76,7 @@ router.post("/bayar-transaksi", upload.single("file"), BayarTransaksi);
 router.post("/konfirmasi-pembayaran", KonfirmasiPembayaran);
 
 //Konfirmasi Penerimaan
-router.post("/terima-barang", KonfirmasiPenerimaan);
+router.post("/konfirmasi-penerimaan", KonfirmasiPenerimaan);
 
 router.post("/lihat-stok", PostEditStok);
 
