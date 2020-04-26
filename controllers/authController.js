@@ -189,7 +189,7 @@ module.exports = {
     try {
       let user;
       if (typeof password != undefined) {
-        const user = await models.Users.update(
+        user = await models.Users.update(
           {
             name: name,
             fullName: fullName,
@@ -208,14 +208,16 @@ module.exports = {
           }
         );
       } else {
-        const user = await models.Users.update(
+        const hashed = await bcrypt.hash(password, 12);
+
+        user = await models.Users.update(
           {
             name: name,
             fullName: fullName,
             address: address,
             birthDate: birthDate,
             username: username,
-            password: password,
+            password: hashed,
             email: email,
             bankAccount: bankAccount,
             bankNumber: bankNumber,
