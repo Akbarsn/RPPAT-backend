@@ -114,6 +114,7 @@ module.exports = {
               req.session.token = token;
               res.status(200).json({
                 message: "Success",
+                data: user,
                 token: token,
               });
             } else {
