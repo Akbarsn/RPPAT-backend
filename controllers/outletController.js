@@ -481,7 +481,6 @@ module.exports = {
     try {
       const stock = await models.OutletStocks.update(
         {
-          item: item,
           weight: weight,
           qty: qty,
           sellPrice: sellPrice,
