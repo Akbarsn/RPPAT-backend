@@ -47,7 +47,7 @@ module.exports = {
       },
       profilImage: {
         type: Sequelize.STRING,
-        defaultValue: "/blank.png",
+        defaultValue: "/upload/blank.png",
       },
       createdAt: {
         allowNull: false,

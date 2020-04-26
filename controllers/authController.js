@@ -187,29 +187,52 @@ module.exports = {
     const userId = req.user.id;
 
     try {
-      const user = await models.Users.update(
-        {
-          name: name,
-          fullName: fullName,
-          address: address,
-          birthDate: birthDate,
-          username: username,
-          password: password,
-          email: email,
-          bankAccount: bankAccount,
-          bankNumber: bankNumber,
-          phoneNumber: phoneNumber,
-        },
-        {
-          where: {
-            id: userId,
+      let user;
+      if (typeof password != undefined) {
+        const user = await models.Users.update(
+          {
+            name: name,
+            fullName: fullName,
+            address: address,
+            birthDate: birthDate,
+            username: username,
+            email: email,
+            bankAccount: bankAccount,
+            bankNumber: bankNumber,
+            phoneNumber: phoneNumber,
           },
-        }
-      );
+          {
+            where: {
+              id: userId,
+            },
+          }
+        );
+      } else {
+        const user = await models.Users.update(
+          {
+            name: name,
+            fullName: fullName,
+            address: address,
+            birthDate: birthDate,
+            username: username,
+            password: password,
+            email: email,
+            bankAccount: bankAccount,
+            bankNumber: bankNumber,
+            phoneNumber: phoneNumber,
+          },
+          {
+            where: {
+              id: userId,
+            },
+          }
+        );
+      }
 
       if (user) {
         res.status(200).json({
           message: "Success",
+          data: user,
         });
       } else {
         res.status(500);
