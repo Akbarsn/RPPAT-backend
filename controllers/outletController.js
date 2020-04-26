@@ -329,7 +329,7 @@ module.exports = {
           const find = await models.OutletStocks.findOne({
             where: {
               item: items[i].item,
-              weight: items[i].weight,
+              weight: items[i].unit,
               buyPrice: items[i].price,
               sellPrice: items[i].price,
             },
@@ -353,7 +353,7 @@ module.exports = {
             const changed = await models.OutletStocks.create({
               item: items[i].item,
               qty: items[i].qty,
-              weight: items[i].weight,
+              weight: items[i].unit,
               sellPrice: items[i].price,
               buyPrice: items[i].price,
               itemImage: "",
@@ -386,18 +386,21 @@ module.exports = {
             await t.commit();
             res.status(200).json({ message: "Success" });
           } else {
+            res.status(500);
             const error = new Error(
               "Terjadi error saat melakukan update order"
             );
             next(error);
           }
         } else {
+          res.status(500);
           const error = new Error(
             "Terjadi error saat melakukan penambahan stok"
           );
           next(error);
         }
       } catch (err) {
+        res.status(500);
         console.log(err.message);
         const error = new Error("Terjadi error saat melakukan penambahan stok");
         next(error);
