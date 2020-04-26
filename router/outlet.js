@@ -65,7 +65,7 @@ router.get("/kasir", GetTambahKasir);
 
 router.post("/kasir", TambahKasir);
 
-router.post("/lihat-stok", PostEditStok);
+router.post("/lihat-stok", upload.single("image"), PostEditStok);
 
 router.get("/notifikasi", GetNotification);
 

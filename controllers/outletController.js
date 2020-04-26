@@ -312,81 +312,101 @@ module.exports = {
     const userId = req.user.id;
 
     try {
-      const items = await models.Transactions.findOne({
-        where: { id: id },
+      const trans = await models.Transactions.findOne({
+        where: {
+          id: id,
+        },
       });
 
-      const isChanged = await models.sequelize.transaction(async (t) => {
-        try {
-          JSON.parse(items.itemDetail).map(async (item) => {
-            let find = await models.OutletStocks.findOne(
-              {
-                where: {
-                  item: item.item,
-                  weight: item.weight,
-                  buyPrice: item.price,
-                  sellPrice: item.price,
-                  owner: userId,
-                },
-              },
-              { transaction: t }
-            );
-
-            var changed;
-            if (find === null) {
-              changed = await models.OutletStocks.create({
-                item: item.item,
-                qty: item.qty,
-                itemImage: "",
-                weight: item.weight,
-                buyPrice: item.price,
-                sellPrice: item.price,
-                owner: userId,
-              });
-            } else {
-              changed = await models.OutletStocks.increment(
-                "qty",
-                {
-                  by: item.qty,
-                  where: {
-                    id: find.id,
-                  },
-                },
-                { transaction: t }
-              );
-            }
-          });
-
-          return true;
-        } catch (err) {
-          console.log(err.message);
-        }
-      });
+      const items = JSON.parse(trans.itemDetail);
+      const t = await models.sequelize.transaction();
 
       try {
-        let order = await models.Transactions.update(
-          { status: 3 },
-          { where: { id: id } }
-        );
-
-        if (order) {
-          res.status(200).json({
-            message: "Success",
-            data: items,
+        let n = 0;
+        console.log(items);
+        console.log(items.length);
+        for (let i = 0; i < items.length; i++) {
+          const find = await models.OutletStocks.findOne({
+            where: {
+              item: items[i].item,
+              weight: items[i].weight,
+              buyPrice: items[i].price,
+              sellPrice: items[i].price,
+            },
           });
+
+          if (find) {
+            const changed = await models.OutletStocks.increment("qty", {
+              by: items[i].qty,
+              where: {
+                id: find.id,
+              },
+            });
+            if (changed) {
+              console.log("changed");
+              n++;
+            } else {
+              console.log("rollback");
+              await t.rollback();
+            }
+          } else {
+            const changed = await models.OutletStocks.create({
+              item: items[i].item,
+              qty: items[i].qty,
+              weight: items[i].weight,
+              sellPrice: items[i].price,
+              buyPrice: items[i].price,
+              itemImage: "",
+              owner: userId,
+            });
+
+            if (changed) {
+              console.log("changed");
+              n++;
+            } else {
+              console.log("rollback");
+              await t.rollback();
+            }
+          }
+        }
+
+        if (n == items.length) {
+          console.log("Commited");
+
+          const update = await models.Transactions.update(
+            { status: 3 },
+            {
+              where: {
+                id: id,
+              },
+            }
+          );
+
+          if (update) {
+            await t.commit();
+            res.status(200).json({ message: "Success" });
+          } else {
+            const error = new Error(
+              "Terjadi error saat melakukan update order"
+            );
+            next(error);
+          }
         } else {
-          res.status(500);
-          const err = new Error("Tidak bisa merubah stock atau order");
-          next(err);
+          const error = new Error(
+            "Terjadi error saat melakukan penambahan stok"
+          );
+          next(error);
         }
       } catch (err) {
         console.log(err.message);
+        const error = new Error("Terjadi error saat melakukan penambahan stok");
+        next(error);
       }
-    } catch (error) {
-      console.log(error.message);
+    } catch (err) {
+      console.log(err);
       res.status(500);
-      const err = new Error("Terjadi kesalahan dalam konfirmasi penerimaan");
-      next(err);
+      const error = new Error("Terjadi error saat mencari transaksi");
+      next(error);
     }
   },
 
@@ -452,7 +472,7 @@ module.exports = {
   },
 
   async PostEditStok(req, res, next) {
-    const { id, item, weight, qty, sellPrice, buyPrice } = req.body;
+    const { id, weight, qty, sellPrice } = req.body;
     const image = req.file.path;
 
     try {
@@ -462,7 +482,6 @@ module.exports = {
           weight: weight,
           qty: qty,
           sellPrice: sellPrice,
-          buyPrice: buyPrice,
           itemImage: image,
         },
         {
@@ -475,6 +494,7 @@ module.exports = {
       if (stock) {
         res.status(200).json({
           message: "Success",
+          data: stock,
         });
       } else {
         res.status(500);
