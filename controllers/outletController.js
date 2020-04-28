@@ -205,6 +205,22 @@ module.exports = {
         },
         include: "products",
       });
+
+      const stores = [...stocks];
+
+      stores.map((store) => {
+        let i = 0;
+
+        let temp = [...store.products];
+        temp.map((item) => {
+          if (item.type == 1) {
+            store.products.splice(i, 1);
+          } else {
+            i++;
+          }
+        });
+      });
+
       if (stocks) {
         res.status(200).json({
           message: "Success",
@@ -218,6 +234,7 @@ module.exports = {
         next(error);
       }
     } catch (err) {
+      console.log(err);
       res.status(500);
       const error = new Error(
         "Terjadi kesalahan saat membukan halaman Beli Produk UMKM"
@@ -230,6 +247,21 @@ module.exports = {
     const id = req.params.shopID;
     try {
       const stocks = await models.Users.findByPk(id, { include: "products" });
+
+      const stores = [...stocks];
+
+      stores.map((store) => {
+        let i = 0;
+
+        let temp = [...store.products];
+        temp.map((item) => {
+          if (item.type == 1) {
+            store.products.splice(i, 1);
+          } else {
+            i++;
+          }
+        });
+      });
 
       if (stocks) {
         res.status(200).json({

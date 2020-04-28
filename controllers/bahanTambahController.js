@@ -215,6 +215,7 @@ module.exports = {
       const history = await models.Transactions.findAll({
         where: {
           from: req.user.id,
+          status: 3,
         },
       });
 
@@ -339,7 +340,7 @@ module.exports = {
       const before = [...notif];
       let i = 0;
       before.map((item) => {
-       if (
+        if (
           (item.status == 0 && item.from == userId) ||
           (item.status == 2 && item.from == userId)
         ) {

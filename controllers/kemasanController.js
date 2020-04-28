@@ -215,7 +215,9 @@ module.exports = {
       const history = await models.Transactions.findAll({
         where: {
           from: req.user.id,
+          status: 3
         },
+        
       });
 
       if (history) {
