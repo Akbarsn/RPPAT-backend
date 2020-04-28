@@ -248,19 +248,14 @@ module.exports = {
     try {
       const stocks = await models.Users.findByPk(id, { include: "products" });
 
-      const stores = [...stocks];
-
-      stores.map((store) => {
-        let i = 0;
-
-        let temp = [...store.products];
-        temp.map((item) => {
-          if (item.type == 1) {
-            store.products.splice(i, 1);
-          } else {
-            i++;
-          }
-        });
+      let temp = [...stocks.products];
+      let i = 0;
+      temp.map((item) => {
+        if (item.type == 1) {
+          stocks.products.splice(i, 1);
+        } else {
+          i++;
+        }
       });
 
       if (stocks) {
@@ -276,6 +271,7 @@ module.exports = {
         next(err);
       }
     } catch (error) {
+      console.log(error);
       res.status(500);
       const err = new Error("Terjadi kesalahan dalam membuka page Detail Toko");
       next(err);
