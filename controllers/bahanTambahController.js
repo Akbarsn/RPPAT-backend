@@ -336,15 +336,17 @@ module.exports = {
         order: [["updatedAt", "DESC"]],
       });
 
+      const before = [...notif];
       let i = 0;
-      notif.map((item) => {
-        if (
-          (item.from == userId && item.status == 2) ||
-          (item.from == userId && item.status == 0)
+      before.map((item) => {
+       if (
+          (item.status == 0 && item.from == userId) ||
+          (item.status == 2 && item.from == userId)
         ) {
           notif.splice(i, 1);
+        } else {
+          i++;
         }
-        i++;
       });
 
       if (notif) {
