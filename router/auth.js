@@ -4,7 +4,7 @@ const multer = require("multer");
 //Config for multer
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "./upload/ktp");
+    cb(null, "./upload/users");
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + "-" + file.originalname);
@@ -22,8 +22,13 @@ const {
   LoginHandler,
 } = require("../controllers/authController");
 
+const registerUpload = upload.fields([
+  { name: "IDcard", maxCount: 1 },
+  { name: "profile", maxCount: 1 },
+]);
+
 //Register
-router.post("/register", upload.single("IDcard"), RegisterHandler);
+router.post("/register", registerUpload, RegisterHandler);
 
 //Login
 router.post("/login", LoginHandler);

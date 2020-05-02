@@ -35,7 +35,6 @@ module.exports = {
       !validator.isEmpty(phoneNumber) &&
       !validator.isEmpty(role);
     if (reqValid) {
-      //Hashing password
       try {
         const find = await models.Users.findOne({
           where: { username: username },
@@ -48,13 +47,13 @@ module.exports = {
           return;
         } else {
           const hashedPassword = await bcrypt.hash(password, 12);
-
           if (hashedPassword) {
             try {
               const user = await models.Users.create({
                 name,
                 fullName,
-                IDcard: req.file.path,
+                IDcard: req.files["IDcard"][0].path,
+                profilImage: req.files["profile"][0].path,
                 address,
                 birthDate,
                 phoneNumber,
@@ -189,46 +188,55 @@ module.exports = {
     try {
       let user;
       if (typeof password != undefined) {
-        user = await models.Users.update(
-          {
-            name: name,
-            fullName: fullName,
-            address: address,
-            birthDate: birthDate,
-            username: username,
-            email: email,
-            bankAccount: bankAccount,
-            bankNumber: bankNumber,
-            phoneNumber: phoneNumber,
-          },
-          {
-            where: {
-              id: userId,
+        try {
+          user = await models.Users.update(
+            {
+              name: name,
+              fullName: fullName,
+              address: address,
+              birthDate: birthDate,
+              username: username,
+              email: email,
+              bankAccount: bankAccount,
+              bankNumber: bankNumber,
+              phoneNumber: phoneNumber,
+              profilImage: req.file.path,
             },
-          }
-        );
+            {
+              where: {
+                id: userId,
+              },
+            }
+          );
+        } catch (er) {
+          console.log(er);
+        }
       } else {
-        const hashed = await bcrypt.hash(password, 12);
+        try {
+          const hashed = await bcrypt.hash(password, 12);
 
-        user = await models.Users.update(
-          {
-            name: name,
-            fullName: fullName,
-            address: address,
-            birthDate: birthDate,
-            username: username,
-            password: hashed,
-            email: email,
-            bankAccount: bankAccount,
-            bankNumber: bankNumber,
-            phoneNumber: phoneNumber,
-          },
-          {
-            where: {
-              id: userId,
+          user = await models.Users.update(
+            {
+              name: name,
+              fullName: fullName,
+              address: address,
+              birthDate: birthDate,
+              username: username,
+              password: hashed,
+              email: email,
+              bankAccount: bankAccount,
+              bankNumber: bankNumber,
+              phoneNumber: phoneNumber,
             },
-          }
-        );
+            {
+              where: {
+                id: userId,
+              },
+            }
+          );
+        } catch (er) {
+          console.log(er);
+        }
       }
 
       if (user) {

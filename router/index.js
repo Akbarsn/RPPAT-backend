@@ -13,12 +13,33 @@ const {
 } = require("../controllers/authController");
 
 const { isAuthenticated } = require("../middleware");
+const multer = require("multer");
+
+//Config for multer
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./upload/ktp");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+//Init multer with Disk Storage
+const upload = multer({
+  storage: storage,
+});
 
 router.use("/auth", authorization);
 
 router.get("/ganti-profile", isAuthenticated, GetGantiProfile);
 
-router.post("/ganti-profile", isAuthenticated, PostGantiProfile);
+router.post(
+  "/ganti-profile",
+  isAuthenticated,
+  upload.single("profile"),
+  PostGantiProfile
+);
 
 router.use("/petani", isAuthenticated, petaniRoute);
 
@@ -33,9 +54,9 @@ router.use("/outlet", isAuthenticated, outletRoute);
 router.use("/kasir", kasirRoute);
 
 router.get("/test", async (req, res) => {
-  const notif = await models.Transactions.findAll({}) 
+  const notif = await models.Transactions.findAll({});
   res.json({
-    notif
+    notif,
   });
 });
 

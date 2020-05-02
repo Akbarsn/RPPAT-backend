@@ -143,15 +143,16 @@ module.exports = {
   async getLaporanProduksi(req, res, next) {
     // const reqMonth = req.params.month
     // const reqYear = req.params.year
+    const userId = req.user.id;
 
     const now = new Date();
     const prevMonth = new Date(now.getFullYear(), now.getMonth());
     const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
 
     try {
-      const stock = await models.FactoryStocks.findAll({
+      const stocks = await models.FactoryStocks.findAll({
         where: {
-          owner: req.user.id,
+          owner: userId,
           createdAt: {
             [Op.lte]: nexMonth,
             [Op.gte]: prevMonth,
@@ -160,10 +161,17 @@ module.exports = {
         },
       });
 
-      if (stock) {
+      const materials = await models.FactoryStocks.findAll({
+        where: {
+          owner: userId,
+          type: 1
+        }
+      })
+
+      if (stocks) {
         res.status(200).json({
           message: "Success",
-          data: stock,
+          data: { stocks, materials },
         });
       } else {
         res.status(500);
@@ -180,9 +188,11 @@ module.exports = {
   },
 
   async postDataProduksi(req, res, next) {
-    const { item, qty, buyPrice, sellPrice, weight } = req.body;
+    const { item, qty, buyPrice, sellPrice, weight, materials } = req.body;
     const userId = req.user.id;
     const type = 2;
+
+    console.log(materials)
 
     if (!(item && qty && buyPrice && sellPrice && weight)) {
       res.status(406);
@@ -190,46 +200,82 @@ module.exports = {
       next(err);
     }
     try {
-      let find = await models.FactoryStocks.findOne({
-        where: {
-          item: item,
-          weight: weight,
-          buyPrice: buyPrice,
-          sellPrice: sellPrice,
-          owner: userId,
-          type: type,
-        },
-      });
+      const t = await models.sequelize.transaction();
 
-      let stock;
-      if (find === null) {
-        stock = await models.FactoryStocks.create({
-          item,
-          qty,
-          weight,
-          buyPrice,
-          sellPrice,
-          owner: userId,
-          type,
-        });
-      } else {
-        stock = await models.FactoryStocks.increment("qty", {
-          by: qty,
+      try {
+        let n = 0;
+        let reduceDone = false;
+        let createDone = false;
+        materials.map(async (material) => {
+          const reduced = await models.FactoryStocks.decrement('qty', {
+            by: material.qty,
+            where: {
+              id: material.id
+            },
+            transaction: t
+          }
+          )
+          if (reduced) {
+            n++;
+          } else {
+            reduceDone = false;
+          }
+        })
+
+        reduceDone = true;
+
+        let find = await models.FactoryStocks.findOne({
           where: {
-            id: find.id,
+            item: item,
+            weight: weight,
+            buyPrice: buyPrice,
+            sellPrice: sellPrice,
+            owner: userId,
+            type: type,
           },
-        });
-      }
+        }, { transaction: t });
 
-      if (stock) {
-        res.status(200).json({
-          message: "Success",
-          data: find === null ? stock : find,
-        });
-      } else {
-        res.status(500);
-        const err = new Error("Can't add stok panen");
-        next(err);
+        let stock;
+        if (find === null) {
+          stock = await models.FactoryStocks.create({
+            item,
+            qty,
+            weight,
+            buyPrice,
+            sellPrice,
+            owner: userId,
+            type,
+          }, { transaction: t });
+        } else {
+          stock = await models.FactoryStocks.increment("qty", {
+            by: qty,
+            where: {
+              id: find.id,
+            },
+          },
+            { transaction: t });
+        }
+
+        if (stock) {
+          createDone = true;
+        } else {
+          throw new Error("Gagal dalam menambah produk bahan");
+        }
+
+        if (createDone && reduceDone) {
+          await t.commit();
+          res.status(200).json({
+            message: "success",
+            data: stock
+          })
+        }
+
+      } catch (err) {
+        console.log(err.message)
+        await t.rollback();
+        res.status(500)
+        const error = new Error("Gagal didalam transaction");
+        next(error)
       }
     } catch (error) {
       res.status(500);
