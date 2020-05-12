@@ -34,12 +34,7 @@ router.use("/auth", authorization);
 
 router.get("/ganti-profile", isAuthenticated, GetGantiProfile);
 
-router.post(
-  "/ganti-profile",
-  isAuthenticated,
-  upload.single("profile"),
-  PostGantiProfile
-);
+router.post("/ganti-profile", isAuthenticated, PostGantiProfile);
 
 router.use("/petani", isAuthenticated, petaniRoute);
 

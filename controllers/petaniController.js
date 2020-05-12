@@ -293,7 +293,7 @@ module.exports = {
     const { id, item, unit, qty, grade, price } = req.body;
 
     try {
-      const stock = await models.PackageStocks.update(
+      const stock = await models.FarmerStocks.update(
         {
           item: item,
           unit: unit,

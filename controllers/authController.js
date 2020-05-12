@@ -200,7 +200,6 @@ module.exports = {
               bankAccount: bankAccount,
               bankNumber: bankNumber,
               phoneNumber: phoneNumber,
-              profilImage: req.file.path,
             },
             {
               where: {
