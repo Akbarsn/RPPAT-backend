@@ -157,16 +157,18 @@ module.exports = {
             [Op.lte]: nexMonth,
             [Op.gte]: prevMonth,
           },
-          type: 2,
+          type: 1,
         },
       });
 
       const materials = await models.FactoryStocks.findAll({
         where: {
           owner: userId,
-          type: 1
-        }
-      })
+          type: {
+            [Op.in]: [2, 3, 4],
+          },
+        },
+      });
 
       if (stocks) {
         res.status(200).json({
@@ -190,9 +192,9 @@ module.exports = {
   async postDataProduksi(req, res, next) {
     const { item, qty, buyPrice, sellPrice, weight, materials } = req.body;
     const userId = req.user.id;
-    const type = 2;
+    const type = 1;
 
-    console.log(materials)
+    console.log(materials);
 
     if (!(item && qty && buyPrice && sellPrice && weight)) {
       res.status(406);
@@ -207,53 +209,61 @@ module.exports = {
         let reduceDone = false;
         let createDone = false;
         materials.map(async (material) => {
-          const reduced = await models.FactoryStocks.decrement('qty', {
+          const reduced = await models.FactoryStocks.decrement("qty", {
             by: material.qty,
             where: {
-              id: material.id
+              id: material.id,
             },
-            transaction: t
-          }
-          )
+            transaction: t,
+          });
           if (reduced) {
             n++;
           } else {
             reduceDone = false;
           }
-        })
+        });
 
         reduceDone = true;
 
-        let find = await models.FactoryStocks.findOne({
-          where: {
-            item: item,
-            weight: weight,
-            buyPrice: buyPrice,
-            sellPrice: sellPrice,
-            owner: userId,
-            type: type,
+        let find = await models.FactoryStocks.findOne(
+          {
+            where: {
+              item: item,
+              weight: weight,
+              buyPrice: buyPrice,
+              sellPrice: sellPrice,
+              owner: userId,
+              type: type,
+            },
           },
-        }, { transaction: t });
+          { transaction: t }
+        );
 
         let stock;
         if (find === null) {
-          stock = await models.FactoryStocks.create({
-            item,
-            qty,
-            weight,
-            buyPrice,
-            sellPrice,
-            owner: userId,
-            type,
-          }, { transaction: t });
-        } else {
-          stock = await models.FactoryStocks.increment("qty", {
-            by: qty,
-            where: {
-              id: find.id,
+          stock = await models.FactoryStocks.create(
+            {
+              item,
+              qty,
+              weight,
+              buyPrice,
+              sellPrice,
+              owner: userId,
+              type,
             },
-          },
-            { transaction: t });
+            { transaction: t }
+          );
+        } else {
+          stock = await models.FactoryStocks.increment(
+            "qty",
+            {
+              by: qty,
+              where: {
+                id: find.id,
+              },
+            },
+            { transaction: t }
+          );
         }
 
         if (stock) {
@@ -266,16 +276,15 @@ module.exports = {
           await t.commit();
           res.status(200).json({
             message: "success",
-            data: stock
-          })
+            data: stock,
+          });
         }
-
       } catch (err) {
-        console.log(err.message)
+        console.log(err.message);
         await t.rollback();
-        res.status(500)
+        res.status(500);
         const error = new Error("Gagal didalam transaction");
-        next(error)
+        next(error);
       }
     } catch (error) {
       res.status(500);
@@ -285,7 +294,7 @@ module.exports = {
     }
   },
 
-  async getLihatStokBahan(req, res, next) {
+  async getLihatStokBahanBaku(req, res, next) {
     try {
       const stocks = await models.FactoryStocks.findAll({
         where: {
@@ -311,12 +320,64 @@ module.exports = {
     }
   },
 
+  async getLihatStokKemasan(req, res, next) {
+    try {
+      const stocks = await models.FactoryStocks.findAll({
+        where: {
+          owner: req.user.id,
+          type: 3,
+        },
+      });
+
+      if (stocks) {
+        res.status(200).json({
+          message: "Success",
+          data: stocks,
+        });
+      } else {
+        res.status(500);
+        const error = new Error("Terjadi kegagalan membuka lihat stok");
+        next(error);
+      }
+    } catch (err) {
+      res.status(500);
+      const error = new Error("Terjadi kegagalan membuka lihat stok");
+      next(error);
+    }
+  },
+
+  async getLihatStokBahanTambahan(req, res, next) {
+    try {
+      const stocks = await models.FactoryStocks.findAll({
+        where: {
+          owner: req.user.id,
+          type: 4,
+        },
+      });
+
+      if (stocks) {
+        res.status(200).json({
+          message: "Success",
+          data: stocks,
+        });
+      } else {
+        res.status(500);
+        const error = new Error("Terjadi kegagalan membuka lihat stok");
+        next(error);
+      }
+    } catch (err) {
+      res.status(500);
+      const error = new Error("Terjadi kegagalan membuka lihat stok");
+      next(error);
+    }
+  },
+
   async getLihatStokProduk(req, res, next) {
     try {
       const stocks = await models.FactoryStocks.findAll({
         where: {
           owner: req.user.id,
-          type: 2,
+          type: 1,
         },
       });
 
@@ -501,18 +562,20 @@ module.exports = {
   },
 
   async PesanBahan(req, res, next) {
-    const { from, total, items, banks, name } = req.body;
+    const { from, total, items, banks, forSeller, forBuyer, type } = req.body;
 
     try {
       const order = await models.Transactions.create({
         from,
         to: req.user.id,
         total,
-        name: name,
+        forSeller,
+        forBuyer,
         itemDetail: JSON.stringify(items),
         payment: banks,
         proof: "",
         status: 0,
+        type: type,
       });
 
       if (order) {
@@ -638,7 +701,7 @@ module.exports = {
                   buyPrice: item.price,
                   sellPrice: item.price,
                   owner: userId,
-                  type: 1,
+                  type: items.type,
                 },
               },
               { transaction: t }
@@ -653,7 +716,7 @@ module.exports = {
                   buyPrice: item.price,
                   sellPrice: item.price,
                   owner: userId,
-                  type: 1,
+                  type: items.type,
                 },
                 { transaction: t }
               );
@@ -664,7 +727,7 @@ module.exports = {
                   by: item.qty,
                   where: {
                     id: find.id,
-                    type: 2,
+                    type: items.type,
                   },
                 },
                 { transaction: t }

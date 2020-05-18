@@ -1,47 +1,47 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('FactoryStocks', {
+    return queryInterface.createTable("FactoryStocks", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       item: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       qty: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       weight: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       sellPrice: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       buyPrice: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       owner: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      type:{ 
+      type: {
         // Menentukan produk atau bahan
-        // 1 = Bahan, 2 = Produk
-        type: Sequelize.INTEGER
+        // 1 = Produk, 2 = Bahan Baku, 3 = Kemasan, 4 = Bahan Tambahan
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('FactoryStocks');
-  }
+    return queryInterface.dropTable("FactoryStocks");
+  },
 };

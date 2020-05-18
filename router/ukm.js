@@ -5,7 +5,9 @@ const {
   getLaporanPenjualan,
   getLaporanProduksi,
   postDataProduksi,
-  getLihatStokBahan,
+  getLihatStokBahanBaku,
+  getLihatStokKemasan,
+  getLihatStokBahanTambahan,
   getLihatStokProduk,
   getRiwayat,
   getBeliBahanPetani,
@@ -50,7 +52,11 @@ router.get("/laporan/produksi", getLaporanProduksi);
 router.post("/laporan", postDataProduksi);
 
 //Get Lihat Stok
-router.get("/lihat-stok/bahan", getLihatStokBahan);
+router.get("/lihat-stok/bahan-baku", getLihatStokBahanBaku);
+
+router.get("/lihat-stok/kemasan", getLihatStokKemasan);
+
+router.get("/lihat-stok/bahan-tambahan", getLihatStokBahanTambahan);
 
 router.get("/lihat-stok/produk", getLihatStokProduk);
 

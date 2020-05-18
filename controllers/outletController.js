@@ -22,13 +22,17 @@ module.exports = {
           },
           { transaction: t }
         );
-        const selling = await models.POS.findAll({
-          where: {
-            owner: req.user.id,
-          },
-        });
 
-        return { allStock, history, selling };
+        const pos = await models.POS.findAll(
+          {
+            where: {
+              owner: req.user.id,
+            },
+          },
+          { transaction: t }
+        );
+
+        return { allStock, history, pos };
       });
 
       let buying = 0;
@@ -37,7 +41,7 @@ module.exports = {
       });
 
       let selling = 0;
-      trans.selling.map((transaction) => {
+      trans.pos.map((transaction) => {
         selling += transaction.total;
       });
 
@@ -279,18 +283,21 @@ module.exports = {
   },
 
   async PesanProduk(req, res, next) {
-    const { from, total, items, banks, name } = req.body;
+    const { from, total, items, banks, forBuyer, forSeller } = req.body;
+    const type = 4;
 
     try {
       const order = await models.Transactions.create({
         from,
         to: req.user.id,
         total,
-        name: name,
+        forBuyer,
+        forSeller,
         itemDetail: JSON.stringify(items),
         payment: banks,
         proof: "",
         status: 0,
+        type:4
       });
 
       if (order) {

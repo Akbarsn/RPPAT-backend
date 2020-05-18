@@ -6,43 +6,51 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING
+      forBuyer: {
+        type: Sequelize.STRING,
+      },
+      forSeller: {
+        type: Sequelize.STRING,
       },
       from: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       to: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       total: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       itemDetail: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       proof: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       status: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      payment:{
-        type: Sequelize.STRING
+      payment: {
+        type: Sequelize.STRING,
+      },
+      type: {
+        //1 = Bahan Baku, 2 = Kemasan, 3 = Bahan Tambahan, 4 = Produk UMKM
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable("Transactions");
-  }
+  },
 };
