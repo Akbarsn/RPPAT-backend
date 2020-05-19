@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       payment: DataTypes.STRING,
       proof: DataTypes.STRING,
       status: DataTypes.INTEGER,
-      role: DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       updatedAt: DataTypes.DATE,
     },
     {}
