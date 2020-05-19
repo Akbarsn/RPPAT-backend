@@ -300,7 +300,7 @@ module.exports = {
       const stocks = await models.FactoryStocks.findAll({
         where: {
           owner: req.user.id,
-          type: 1,
+          type: 2,
         },
       });
 

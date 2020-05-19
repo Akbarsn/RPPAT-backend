@@ -217,7 +217,7 @@ module.exports = {
 
         let temp = [...store.products];
         temp.map((item) => {
-          if (item.type == 1) {
+          if (item.type == 2 || item.type == 3 || item.type == 4) {
             store.products.splice(i, 1);
           } else {
             i++;
@@ -255,7 +255,7 @@ module.exports = {
       let temp = [...stocks.products];
       let i = 0;
       temp.map((item) => {
-        if (item.type == 1) {
+        if (item.type == 2 || item.type == 3 || item.type == 4) {
           stocks.products.splice(i, 1);
         } else {
           i++;
@@ -297,7 +297,7 @@ module.exports = {
         payment: banks,
         proof: "",
         status: 0,
-        type:4
+        type: 4,
       });
 
       if (order) {

@@ -27,7 +27,7 @@ module.exports = {
 
       let buying = 0;
       trans.allStock.map((stock) => {
-        buying += stock.buyPrice;
+        buying += stock.buyPrice * stock.qty;
       });
 
       let selling = 0;
