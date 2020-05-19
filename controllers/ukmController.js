@@ -10,6 +10,7 @@ module.exports = {
           {
             where: {
               owner: req.user.id,
+              type: 1,
             },
           },
           { transaction: t }

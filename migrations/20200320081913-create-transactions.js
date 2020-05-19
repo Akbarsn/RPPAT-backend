@@ -36,7 +36,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       type: {
-        //1 = Bahan Baku, 2 = Kemasan, 3 = Bahan Tambahan, 4 = Produk UMKM
+        //2 = Bahan Baku, 3 = Kemasan, 4 = Bahan Tambahan, 1 = Produk UMKM
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },

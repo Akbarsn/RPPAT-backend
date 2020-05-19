@@ -284,7 +284,7 @@ module.exports = {
 
   async PesanProduk(req, res, next) {
     const { from, total, items, banks, forBuyer, forSeller } = req.body;
-    const type = 4;
+    const type = 1;
 
     try {
       const order = await models.Transactions.create({
