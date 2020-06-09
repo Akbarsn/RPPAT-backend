@@ -641,7 +641,7 @@ module.exports = {
                 by: item.qty,
                 where: {
                   id: item.id,
-                  type: 2,
+                  type: 1,
                 },
               },
               { transaction: t }
@@ -766,7 +766,7 @@ module.exports = {
     const { id, item, weight, qty, sellPrice, buyPrice } = req.body;
 
     try {
-      const stock = await models.PackageStocks.update(
+      const stock = await models.FactoryStocks.update(
         {
           item: item,
           weight: weight,

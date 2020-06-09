@@ -49,9 +49,9 @@ router.use("/outlet", isAuthenticated, outletRoute);
 router.use("/kasir", kasirRoute);
 
 router.get("/test", async (req, res) => {
-  const notif = await models.Transactions.findAll({});
+  const hello = "Hello World!";
   res.json({
-    notif,
+    data: hello,
   });
 });
 

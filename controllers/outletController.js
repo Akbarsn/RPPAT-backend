@@ -367,6 +367,7 @@ module.exports = {
               weight: items[i].unit,
               buyPrice: items[i].price,
               sellPrice: items[i].price,
+              owner: userId,
             },
           });
 
