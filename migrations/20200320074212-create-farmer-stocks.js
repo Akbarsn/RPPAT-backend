@@ -17,8 +17,11 @@ module.exports = {
       qty: {
         type: Sequelize.INTEGER
       },
-      price: {
+      sellPrice: {
         type: Sequelize.INTEGER
+      },
+      buyPrice: {
+        type: Sequelize.INTEGER,
       },
       unit: {
         type: Sequelize.STRING

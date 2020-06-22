@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     item: DataTypes.STRING,
     grade: DataTypes.CHAR,
     qty: DataTypes.INTEGER,
-    price: DataTypes.INTEGER,
+    buyPrice: DataTypes.INTEGER,
+    sellPrice: DataTypes.INTEGER,
     unit: DataTypes.STRING,
     owner: DataTypes.INTEGER
   }, {});

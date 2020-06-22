@@ -127,10 +127,10 @@ module.exports = {
   },
 
   async postStokPanen(req, res, next) {
-    const { item, grade, qty, price, unit } = req.body;
+    const { item, grade, qty, sellPrice, buyPrice, unit } = req.body;
     const userId = req.user.id;
 
-    if (!(item && grade && qty && price && unit)) {
+    if (!(item && grade && qty && sellPrice && buyPrice && unit)) {
       res.status(406);
       const err = new Error("Field still empty");
       next(err);
@@ -141,7 +141,8 @@ module.exports = {
           item: item,
           grade: grade,
           unit: unit,
-          price: price,
+          sellPrice: sellPrice,
+          buyPrice: buyPrice,
           owner: userId,
         },
       });
@@ -152,7 +153,8 @@ module.exports = {
           item,
           grade,
           qty,
-          price,
+          sellPrice,
+          buyPrice,
           unit,
           owner: userId,
         });
@@ -290,7 +292,7 @@ module.exports = {
   },
 
   async PostEditStok(req, res, next) {
-    const { id, item, unit, qty, grade, price } = req.body;
+    const { id, item, unit, qty, grade, sellPrice, buyPrice } = req.body;
 
     try {
       const stock = await models.FarmerStocks.update(
@@ -299,7 +301,8 @@ module.exports = {
           unit: unit,
           qty: qty,
           grade: grade,
-          price: price,
+          buyPrice: buyPrice,
+          sellPrice: sellPrice,
         },
         {
           where: {
