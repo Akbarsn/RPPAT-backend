@@ -7,6 +7,7 @@ const kemasanRoute = require("./kemasan");
 const bahanTambahRoute = require("./bahanTambah");
 const outletRoute = require("./outlet");
 const UMKMRoute = require("./ukm");
+const adminRoute = require('./admin')
 const {
   GetGantiProfile,
   PostGantiProfile,
@@ -47,6 +48,8 @@ router.use("/umkm", isAuthenticated, UMKMRoute);
 router.use("/outlet", isAuthenticated, outletRoute);
 
 router.use("/kasir", kasirRoute);
+
+router.use('/admin', adminRoute)
 
 router.get("/test", async (req, res) => {
   const hello = "Hello World!";
