@@ -49,7 +49,7 @@ router.use("/outlet", isAuthenticated, outletRoute);
 
 router.use("/kasir", kasirRoute);
 
-router.use('/admin', adminRoute)
+router.use('/admin', isAuthenticated, adminRoute)
 
 router.get("/test", async (req, res) => {
   const hello = "Hello World!";
