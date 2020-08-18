@@ -195,8 +195,6 @@ module.exports = {
     const userId = req.user.id;
     const type = 1;
 
-    console.log(materials);
-
     if (!(item && qty && buyPrice && sellPrice && weight)) {
       res.status(406);
       const err = new Error("Field still empty");
@@ -279,6 +277,8 @@ module.exports = {
             message: "success",
             data: stock,
           });
+        } else {
+          await t.rollback()
         }
       } catch (err) {
         console.log(err.message);
