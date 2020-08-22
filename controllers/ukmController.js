@@ -106,21 +106,28 @@ module.exports = {
     // const reqMonth = req.params.month
     // const reqYear = req.params.year
 
-    const now = new Date();
-    const prevMonth = new Date(now.getFullYear(), now.getMonth());
-    const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
+    // const now = new Date();
+    // const prevMonth = new Date(now.getFullYear(), now.getMonth());
+    // const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
 
     try {
+      // const transaction = await models.Transactions.findAll({
+      //   where: {
+      //     to: req.user.id,
+      //     createdAt: {
+      //       [Op.lte]: nexMonth,
+      //       [Op.gte]: prevMonth,
+      //     },
+      //     status: 3,
+      //   },
+      // });
+
       const transaction = await models.Transactions.findAll({
         where: {
           to: req.user.id,
-          createdAt: {
-            [Op.lte]: nexMonth,
-            [Op.gte]: prevMonth,
-          },
-          status: 3,
-        },
-      });
+          status: 3
+        }
+      })
 
       if (transaction) {
         res.status(200).json({
@@ -146,21 +153,28 @@ module.exports = {
     // const reqYear = req.params.year
     const userId = req.user.id;
 
-    const now = new Date();
-    const prevMonth = new Date(now.getFullYear(), now.getMonth());
-    const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
+    // const now = new Date();
+    // const prevMonth = new Date(now.getFullYear(), now.getMonth());
+    // const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
 
     try {
+      // const stocks = await models.FactoryStocks.findAll({
+      //   where: {
+      //     owner: userId,
+      //     createdAt: {
+      //       [Op.lte]: nexMonth,
+      //       [Op.gte]: prevMonth,
+      //     },
+      //     type: 1,
+      //   },
+      // });
+
       const stocks = await models.FactoryStocks.findAll({
         where: {
           owner: userId,
-          createdAt: {
-            [Op.lte]: nexMonth,
-            [Op.gte]: prevMonth,
-          },
-          type: 1,
-        },
-      });
+          type: 1
+        }
+      })
 
       const materials = await models.FactoryStocks.findAll({
         where: {

@@ -69,20 +69,26 @@ module.exports = {
     // const reqMonth = req.params.month
     // const reqYear = req.params.year
 
-    const now = new Date();
-    const prevMonth = new Date(now.getFullYear(), now.getMonth());
-    const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
+    // const now = new Date();
+    // const prevMonth = new Date(now.getFullYear(), now.getMonth());
+    // const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
 
     try {
+      // const sell = await models.POS.findAll({
+      //   where: {
+      //     owner: req.user.id,
+      //     createdAt: {
+      //       [Op.lte]: nexMonth,
+      //       [Op.gte]: prevMonth,
+      //     },
+      //   },
+      // });
+
       const sell = await models.POS.findAll({
         where: {
-          owner: req.user.id,
-          createdAt: {
-            [Op.lte]: nexMonth,
-            [Op.gte]: prevMonth,
-          },
-        },
-      });
+          owner: req.user.id
+        }
+      })
 
       if (sell) {
         res.status(200).json({
@@ -107,20 +113,26 @@ module.exports = {
     // const reqMonth = req.params.month
     // const reqYear = req.params.year
 
-    const now = new Date();
-    const prevMonth = new Date(now.getFullYear(), now.getMonth());
-    const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
+    // const now = new Date();
+    // const prevMonth = new Date(now.getFullYear(), now.getMonth());
+    // const nexMonth = new Date(now.getFullYear(), now.getMonth() + 2);
 
     try {
+      // const stock = await models.Transactions.findAll({
+      //   where: {
+      //     to: req.user.id,
+      //     createdAt: {
+      //       [Op.lte]: nexMonth,
+      //       [Op.gte]: prevMonth,
+      //     },
+      //   },
+      // });
+
       const stock = await models.Transactions.findAll({
         where: {
-          to: req.user.id,
-          createdAt: {
-            [Op.lte]: nexMonth,
-            [Op.gte]: prevMonth,
-          },
-        },
-      });
+          to: req.user.id
+        }
+      })
 
       if (stock) {
         res.status(200).json({
